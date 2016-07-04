@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.globalroam.component</groupId>
+    <artifactId>sender</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-RELEASE</version>
+
+    <inceptionYear>2016</inceptionYear>
+    <licenses>
+        <license>
+            <name>Apache 2</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+            <comments>A business-friendly OSS license</comments>
+        </license>
+    </licenses>
+    <organization>
+        <name>Horizon</name>
+        <url>http://www.xxxxxx.com</url>
+    </organization>
+
+    <modules>
+        <module>sender-api</module>
+        <module>sender-default</module>
+        <module>sender-core</module>
+    </modules>
+
+    <properties>
+        <skip_maven_deploy>false</skip_maven_deploy>
+        <!-- for maven compiler plugin -->
+        <java_source_version>1.6</java_source_version>
+        <java_target_version>1.6</java_target_version>
+        <file_encoding>UTF-8</file_encoding>
+
+        <project.build.sourceEncoding>${file_encoding}</project.build.sourceEncoding>
+    </properties>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <addMavenDescriptor>true</addMavenDescriptor>
+                        <index>true</index>
+                        <manifest>
+                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <skip>${skip_maven_deploy}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+    <issueManagement>
+        <system>github</system>
+        <url>https://github.com/losky/sender/issues</url>
+    </issueManagement>
+    <scm>
+        <url>https://github.com/losky/sender</url>
+        <connection>https://github.com/losky/sender.git</connection>
+    </scm>
+    <mailingLists>
+        <mailingList>
+            <name>Horizon User Mailling List</name>
+            <subscribe>Horizon-subscribe AT googlegroups DOT com</subscribe>
+            <unsubscribe>Horizon-unsubscribe AT googlegroups DOT com</unsubscribe>
+            <post>Horizon AT googlegroups DOT com</post>
+            <archive>http://groups.google.com/group/Horizon</archive>
+        </mailingList>
+    </mailingLists>
+    <developers>
+        <developer>
+            <name>Zhenzhong</name>
+            <id>Zhenzhong.Luo</id>
+            <email>271923379 (AT) qq.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+</project>
