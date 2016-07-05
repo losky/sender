@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ServiceLoader;
+import java.util.concurrent.Callable;
+import java.util.concurrent.Future;
 
 /**
  * interface defined by
@@ -26,6 +28,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
         taskExecutor.setMaxPoolSize(10);
         taskExecutor.setQueueCapacity(100);
         taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+        taskExecutor.initialize();
     }
 
     private MimeMessage mimeMessage;
@@ -36,7 +39,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
 
     public AbstractDispatcher(MimeMessage mimeMessage) throws Exception {
         this.mimeMessage = mimeMessage;
-        this.initial(mimeMessage);
+//        this.initial(mimeMessage);
     }
 
     /**
@@ -53,25 +56,34 @@ public abstract class AbstractDispatcher implements Dispatcher {
      */
     @Override
     public void dispatch(boolean sync) throws Exception {
+        this.initial(mimeMessage);
         final Sender sender = getSender();
         if (sender == null) {
             throw new NullPointerException("Not found Sender \'" + mimeMessage.getSendType() + "\'.");
         }
-
-        LOG.debug("Found '{}' send message: {}", sender, mimeMessage);
-        if (sync)
+        if (sync) {
             sender.send(mimeMessage);
-        else {
-            taskExecutor.execute(new Runnable() {
+        } else {
+            Future<String> result = taskExecutor.submit(new Callable<String>() {
+                /**
+                 * Computes a result, or throws an exception if unable to do so.
+                 *
+                 * @return computed result
+                 *
+                 * @throws Exception if unable to compute a result
+                 */
                 @Override
-                public void run() {
+                public String call() throws Exception {
                     try {
                         sender.send(mimeMessage);
                     } catch (Exception e) {
                         LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
+                        return e.getMessage();
                     }
+                    return "success";
                 }
             });
+            LOG.info("result: {}", result.get());
         }
     }
 
@@ -85,8 +97,10 @@ public abstract class AbstractDispatcher implements Dispatcher {
     private final Sender getSender() throws Exception {
         final String sendType = getType();
         for (Sender sender : sl) {
-            if (sender.isSupported(sendType))
+            if (sender.isSupported(sendType)) {
+                LOG.debug("Found sender \'{}\'", sender);
                 return sender;
+            }
         }
         throw new NullPointerException("Not supported sender \'" + sendType + "\'.");
     }

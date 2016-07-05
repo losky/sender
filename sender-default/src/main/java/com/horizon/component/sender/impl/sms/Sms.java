@@ -1,4 +1,4 @@
-package com.horizon.component.sender.sms;
+package com.horizon.component.sender.impl.sms;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

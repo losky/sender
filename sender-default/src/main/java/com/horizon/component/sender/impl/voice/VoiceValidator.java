@@ -1,4 +1,5 @@
-package com.horizon.component.sender.email;
+package com.horizon.component.sender.impl.voice;
+
 
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.validation.AbstractValidator;
@@ -11,19 +12,18 @@ import org.slf4j.LoggerFactory;
  * @author ZhenZhong
  * @date 2016/6/16
  */
-public class EmailValidator extends AbstractValidator<MimeMessage> {
+public class VoiceValidator extends AbstractValidator<MimeMessage> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EmailValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(VoiceValidator.class);
 
-    public EmailValidator() {
+    public VoiceValidator() {
         requiredParams.add("send_type");
-        requiredParams.add("subject");
         requiredParams.add("to");
     }
 
     @Override
     public boolean isSupported(String type) throws Exception {
-        return "email".equalsIgnoreCase(type) ? true : false;
+        return "voice".equalsIgnoreCase(type) ? true : false;
     }
 
     /**
@@ -35,8 +35,8 @@ public class EmailValidator extends AbstractValidator<MimeMessage> {
      */
     @Override
     public void validateInvalidParameters(MimeMessage mimeMessage) throws Exception {
-        if (!isValidEmail(mimeMessage.getTo()))
-            throw new IllegalArgumentException("Illegal email!");
+        if (!isValidMobileNo(mimeMessage.getTo()))
+            throw new IllegalArgumentException("Illegal mobile phone!");
     }
 
 

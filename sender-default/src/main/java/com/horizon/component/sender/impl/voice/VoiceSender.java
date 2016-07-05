@@ -1,9 +1,9 @@
-package com.horizon.component.sender.voice;
+package com.horizon.component.sender.impl.voice;
 
 
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.Sender;
-import com.horizon.component.sender.email.EmailSender;
+import com.horizon.component.sender.impl.email.EmailSender;
 import com.horizon.component.utilities.HttpClientConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +24,8 @@ public class VoiceSender implements Sender<MimeMessage> {
         Properties properties = new Properties();
         voice = new Voice();
         try {
-            LOG.info("Initialize the config info.");
-            properties.load(EmailSender.class.getResourceAsStream("voice.properties"));
+            LOG.info("Initialize the voice config.");
+            properties.load(EmailSender.class.getClassLoader().getResourceAsStream("voice.properties"));
         } catch (IOException e) {
             LOG.error("Load config file error: {}", e.toString());
         }

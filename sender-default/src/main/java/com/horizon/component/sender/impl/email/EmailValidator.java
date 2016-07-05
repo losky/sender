@@ -1,5 +1,4 @@
-package com.horizon.component.sender.sms;
-
+package com.horizon.component.sender.impl.email;
 
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.validation.AbstractValidator;
@@ -12,12 +11,13 @@ import org.slf4j.LoggerFactory;
  * @author ZhenZhong
  * @date 2016/6/16
  */
-public class SmsValidator extends AbstractValidator<MimeMessage> {
+public class EmailValidator extends AbstractValidator<MimeMessage> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SmsValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EmailValidator.class);
 
-    public SmsValidator() {
+    public EmailValidator() {
         requiredParams.add("send_type");
+        requiredParams.add("subject");
         requiredParams.add("to");
     }
 
@@ -35,7 +35,9 @@ public class SmsValidator extends AbstractValidator<MimeMessage> {
      */
     @Override
     public void validateInvalidParameters(MimeMessage mimeMessage) throws Exception {
-        if (!isValidMobileNo(mimeMessage.getTo()))
-            throw new IllegalArgumentException("Illegal mobile phone!");
+        if (!isValidEmail(mimeMessage.getTo()))
+            throw new IllegalArgumentException("Illegal email!");
     }
+
+
 }

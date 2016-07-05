@@ -51,10 +51,10 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      */
     @Override
     public void validateRequiredParameters(T mimeMessage) throws Exception {
+        LOG.info("Validate required parameters {}", requiredParams);
         final Set<String> missingParameters = new HashSet<String>();
         Map<String, String> parameters = new HashMap<String, String>();
         try {
-            LOG.info("Parse the mime message: {}", mimeMessage.toString());
             parameters = mapper.readValue(mapper.writeValueAsString(mimeMessage), Map.class);
         } catch (JsonProcessingException e) {
             LOG.error("Can not parse the mime message. The case {}", e.toString());
@@ -83,6 +83,7 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      */
     @Override
     public void validateTemplateParameters(T mimeMessage) throws Exception {
+        LOG.info("Validate template parameters {}", templateParams);
         final Set<String> missingParameters = new HashSet<String>();
         if (mimeMessage.getContent() == null || mimeMessage.getContent().length() == 0) {
             if (mimeMessage.getTemplate() == null || mimeMessage.getTemplate().getModel() == null)

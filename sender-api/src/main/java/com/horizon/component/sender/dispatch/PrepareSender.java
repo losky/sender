@@ -4,11 +4,10 @@ package com.horizon.component.sender.dispatch;
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.Validator;
 import com.horizon.component.sender.basic.DefaultValidator;
+import com.horizon.component.utilities.VelocityEngineUtils;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -29,19 +28,17 @@ public class PrepareSender {
         this.mimeMessage = mimeMessage;
     }
 
-    private static final VelocityEngine velocityEngine = new VelocityEngine();
+    private static final VelocityEngine velocityEngine;
 
     static {
         Properties properties = new Properties();
         try {
-            LOG.info("Initialize the config info.");
-            properties.load(PrepareSender.class.getResourceAsStream("velocity.properties"));
+            LOG.info("Initialize the template config.");
+            properties.load(PrepareSender.class.getClassLoader().getResourceAsStream("velocity.properties"));
         } catch (IOException e) {
             LOG.error("Load config file error: {}", e.toString());
         }
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
-        velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
-        velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, properties.getProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH));
+        velocityEngine = new VelocityEngine(properties);
     }
 
     /**
@@ -85,7 +82,7 @@ public class PrepareSender {
                 return this;
             }
         }
-        LOG.info("Not supported sender \'" + sendType + "\'.");
+        LOG.info("Not supported validator for \'" + sendType + "\'.");
         LOG.info("Use default validator.");
         Validator validator = new DefaultValidator();
         validator.validate(mimeMessage);

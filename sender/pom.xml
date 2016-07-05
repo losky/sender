@@ -3,31 +3,39 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>sender</artifactId>
-        <groupId>com.globalroam.component</groupId>
+        <artifactId>sender-parent</artifactId>
+        <groupId>com.horizon.component</groupId>
         <version>1.0-RELEASE</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.globalroam.component</groupId>
-    <artifactId>sender-core</artifactId>
-    <version>1.0-RELEASE</version>
+    <groupId>com.horizon.component</groupId>
+    <artifactId>sender</artifactId>
+    <version>${project.parent.version}</version>
     <packaging>jar</packaging>
+
+    <description>The all in one project of sender</description>
 
     <properties>
         <skip_maven_deploy>false</skip_maven_deploy>
     </properties>
 
     <dependencies>
+        <!-- add all module that will merge -->
         <dependency>
-            <groupId>com.globalroam.component</groupId>
+            <groupId>com.horizon.component</groupId>
             <artifactId>sender-api</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.globalroam.component</groupId>
+            <groupId>com.horizon.component</groupId>
             <artifactId>sender-default</artifactId>
-            <version>1.0-RELEASE</version>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.horizon.component</groupId>
+            <artifactId>sender-container</artifactId>
+            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
@@ -75,17 +83,25 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <createSourcesJar>false</createSourcesJar>
+                            <createSourcesJar>true</createSourcesJar>
                             <promoteTransitiveDependencies>true</promoteTransitiveDependencies>
                             <artifactSet>
                                 <includes>
                                     <!-- 打包的模块 -->
-                                    <include>com.horizon.component:sender-api</include>
                                     <include>com.horizon.component:sender-default</include>
+                                    <include>com.horizon.component:sender-container</include>
+                                    <include>com.horizon.component:sender-api</include>
                                 </includes>
                             </artifactSet>
                             <transformers>
-
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/services/com.horizon.component.sender.Sender</resource>
+                                </transformer>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>META-INF/services/com.horizon.component.sender.Validator</resource>
+                                </transformer>
                             </transformers>
                         </configuration>
                     </execution>

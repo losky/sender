@@ -1,4 +1,4 @@
-package com.horizon.component.sender.voice;
+package com.horizon.component.sender.impl.voice;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;

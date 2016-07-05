@@ -7,9 +7,9 @@ package com.horizon.component.sender.basic;
  * @date 2016/6/3
  */
 public enum SendType {
-    EMAIL("com.horizon.component.sender.email"),
-    SMS("com.horizon.component.sender.sms"),
-    VOICE("com.horizon.component.sender.voice");
+    EMAIL("com.horizon.component.sender.impl.email"),
+    SMS("com.horizon.component.sender.impl.sms"),
+    VOICE("com.horizon.component.sender.impl.voice");
 
     private String type;
 

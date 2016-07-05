@@ -1,4 +1,4 @@
-package com.horizon.component.sender.voice;
+package com.horizon.component.sender.impl.sms;
 
 
 import com.horizon.component.sender.MimeMessage;
@@ -12,18 +12,18 @@ import org.slf4j.LoggerFactory;
  * @author ZhenZhong
  * @date 2016/6/16
  */
-public class VoiceValidator extends AbstractValidator<MimeMessage> {
+public class SmsValidator extends AbstractValidator<MimeMessage> {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VoiceValidator.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SmsValidator.class);
 
-    public VoiceValidator() {
+    public SmsValidator() {
         requiredParams.add("send_type");
         requiredParams.add("to");
     }
 
     @Override
     public boolean isSupported(String type) throws Exception {
-        return "voice".equalsIgnoreCase(type) ? true : false;
+        return "email".equalsIgnoreCase(type) ? true : false;
     }
 
     /**
@@ -38,6 +38,4 @@ public class VoiceValidator extends AbstractValidator<MimeMessage> {
         if (!isValidMobileNo(mimeMessage.getTo()))
             throw new IllegalArgumentException("Illegal mobile phone!");
     }
-
-
 }

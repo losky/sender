@@ -1,4 +1,4 @@
-package com.horizon.component.sender.email;
+package com.horizon.component.sender.impl.email;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

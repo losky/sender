@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="OFF">
+
+
+
+    <appenders>
+        <Console name="consolePrint" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{req.remoteIP}-%X{req.userAgent}] %style{%highlight{%-6.6level}}{Bright}|%-40.40logger{1.}|%msg%n%xEx{8}"/>
+        </Console>
+        <!-- 输出到error文件 -->
+        <!--<RollingFile name="error_file" fileName="${sys:catalina.home}/logs/catalina_error.log"-->
+                     <!--filePattern="${sys:catalina.home}/logs/catalina_error.%d{yyyy-MM-dd}.log">-->
+            <!--<PatternLayout-->
+                    <!--pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{req.remoteIP}-%X{req.userAgent}] %style{%highlight{%-6.6level}}{Bright}|%-40.40logger{1.}|%msg%n%xEx{8}"/>-->
+
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy interval="24" modulate="true"/>-->
+            <!--</Policies>-->
+            <!--<Filters>-->
+                <!--<ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <!--</Filters>-->
+        <!--</RollingFile>-->
+
+        <!-- 输出到normal文件中 -->
+        <!--<RollingFile name="normal_file" fileName="${sys:catalina.home}/logs/catalina_normal.log"-->
+                     <!--filePattern="${sys:catalina.home}/logs/catalina_normal.%d{yyyy-MM-dd}.log">-->
+            <!--<PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%X{req.remoteIP}-%X{req.userAgent}] %style{%highlight{%-6.6level}}{Bright}|%-40.40logger{1.}|%msg%n%xEx{8}"/>-->
+            <!--<Policies>-->
+                <!--<TimeBasedTriggeringPolicy interval="24" modulate="true"/>-->
+            <!--</Policies>-->
+            <!--<Filters>-->
+                <!--<ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>-->
+                <!--<ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY"/>-->
+            <!--</Filters>-->
+        <!--</RollingFile>-->
+    </appenders>
+
+    <loggers>
+
+        <logger name="com.horizon.component" level="DEBUG"/>
+
+        <logger name="org.springframework" level="WARN"/>
+        <logger name="org.logicalcobwebs" level="WARN"/>
+        <logger name="java.sql.Connection" level="DEBUG"/>
+        <logger name="java.sql.Statement" level="DEBUG"/>
+        <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+
+        <root level="INFO">
+            <appender-ref ref="consolePrint"/>
+            <!--<appender-ref ref="error_file"/>-->
+            <!--<appender-ref ref="normal_file"/>-->
+        </root>
+    </loggers>
+</configuration>

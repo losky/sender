@@ -1,9 +1,9 @@
-package com.horizon.component.sender.sms;
+package com.horizon.component.sender.impl.sms;
 
 
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.Sender;
-import com.horizon.component.sender.email.EmailSender;
+import com.horizon.component.sender.impl.email.EmailSender;
 import com.horizon.component.utilities.HttpClientConnection;
 import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
@@ -23,13 +23,13 @@ public class SmsSender implements Sender<MimeMessage> {
         Properties properties = new Properties();
         sms = new Sms();
         try {
-            LOG.info("Initialize the config info.");
-            properties.load(EmailSender.class.getResourceAsStream("sms.properties"));
+            LOG.info("Initialize the sms config.");
+            properties.load(EmailSender.class.getClassLoader().getResourceAsStream("sms.properties"));
         } catch (IOException e) {
             LOG.error("Load config file error: {}", e.toString());
         }
         sms.setSmsServiceUrl(properties.getProperty("sms.http.url"));
-        sms.setApiKey(properties.getProperty("sms.http.url"));
+        sms.setApiKey(properties.getProperty("sms.http.apiKey"));
         sms.setSecureKey(properties.getProperty("sms.http.secureKey"));
         sms.setApiVersion(properties.getProperty("sms.http.apiVersion"));
         sms.setSenderId(properties.getProperty("sms.http.sender"));

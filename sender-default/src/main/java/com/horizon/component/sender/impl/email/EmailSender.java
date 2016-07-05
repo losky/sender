@@ -1,4 +1,4 @@
-package com.horizon.component.sender.email;
+package com.horizon.component.sender.impl.email;
 
 
 import com.horizon.component.sender.Sender;
@@ -25,8 +25,8 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
     static {
         Properties properties = new Properties();
         try {
-            LOG.info("Initialize the config info.");
-            properties.load(EmailSender.class.getResourceAsStream("email.properties"));
+            LOG.info("Initialize the email config.");
+            properties.load(EmailSender.class.getClassLoader().getResourceAsStream("mail.properties"));
         } catch (IOException e) {
             LOG.error("Load config file error: {}", e.toString());
         }
