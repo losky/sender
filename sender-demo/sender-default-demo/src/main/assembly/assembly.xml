@@ -21,13 +21,18 @@
 	<includeBaseDirectory>true</includeBaseDirectory>
 	<fileSets>
 		<fileSet>
-			<directory>${project.build.directory}/dubbo/META-INF/assembly/bin</directory>
+			<directory>${project.build.directory}/sender/META-INF/assembly/bin</directory>
 			<outputDirectory>bin</outputDirectory>
 			<fileMode>0755</fileMode>
 		</fileSet>
 		<fileSet>
 			<directory>src/main/assembly/conf</directory>
 			<outputDirectory>conf</outputDirectory>
+			<fileMode>0644</fileMode>
+		</fileSet>
+		<fileSet>
+			<directory>src/main/assembly/demo</directory>
+			<outputDirectory>demo</outputDirectory>
 			<fileMode>0644</fileMode>
 		</fileSet>
 	</fileSets>

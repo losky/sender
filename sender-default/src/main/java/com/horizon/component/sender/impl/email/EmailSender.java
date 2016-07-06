@@ -32,6 +32,7 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
         }
         SESSION = Session.getDefaultInstance(properties,
                 new EmailAuthenticator(properties.getProperty("mail.username"), properties.getProperty("mail.password")));
+        LOG.info("Connect to the mail server ==> {}", properties.get("mail.smtp.host") + ":" + properties.get("mail.smtp.port"));
     }
 
     private void prepare(String from, String to, String subject, String content) throws MessagingException {

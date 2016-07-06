@@ -2,36 +2,25 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
-    <modelVersion>4.0.0</modelVersion>
     <parent>
         <artifactId>sender-parent</artifactId>
         <groupId>com.horizon.component</groupId>
         <version>1.0-RELEASE</version>
     </parent>
+    <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.horizon.component</groupId>
-    <artifactId>sender-default</artifactId>
-    <version>${project.parent.version}</version>
-    <packaging>jar</packaging>
-
+    <artifactId>sender-demo</artifactId>
+    <packaging>pom</packaging>
+    <version>>${project.parent.version}</version>
 
     <properties>
         <skip_maven_deploy>true</skip_maven_deploy>
     </properties>
 
+    <modules>
+        <module>sender-default-demo</module>
+    </modules>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.horizon.component</groupId>
-            <artifactId>sender-api</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-        </dependency>
-    </dependencies>
 
 </project>

@@ -2,12 +2,11 @@ package com.horizon.component.container;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.horizon.component.sender.Dispatcher;
-import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.basic.BasicMineMessage;
 import com.horizon.component.sender.dispatch.SenderDispatcher;
-import org.apache.commons.lang.NullArgumentException;
 
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 
 /**
  * interface defined by
@@ -17,15 +16,31 @@ import java.io.IOException;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+
+        System.out.println(Main.class.getResource("/"));
+        System.out.println(Main.class.getClassLoader().getResource(""));
         if (args == null || args.length == 0) {
-            throw new NullArgumentException(MimeMessage.class.getSimpleName());
+            args = new String[]{"demo/message.txt"};
         }
-        String msg = args[0];
+        URL url = Main.class.getClassLoader().getResource(args[0]);
+        if (url == null) throw new FileNotFoundException("Can not find the message \'" + args[0] + "\' file.");
+        String message;
+        BufferedReader reader = new BufferedReader(new FileReader(new File(url.getFile())));
+        StringBuffer buffer = new StringBuffer();
+        try {
+            while ((message = reader.readLine()) != null) {
+                buffer.append(message);
+            }
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+
         ObjectMapper mapper = new ObjectMapper();
         BasicMineMessage mimeMessage;
         try {
-            mimeMessage = mapper.readValue(msg, BasicMineMessage.class);
+            mimeMessage = mapper.readValue(buffer.toString(), BasicMineMessage.class);
         } catch (IOException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

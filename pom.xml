@@ -29,6 +29,7 @@
         <module>sender</module>
         <module>Horizon-Container</module>
         <module>sender-container</module>
+        <module>sender-demo</module>
     </modules>
 
     <properties>

@@ -1,7 +1,11 @@
 package com.horizon.component.utilities;
 
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.NullArgumentException;
+
 import java.lang.reflect.Constructor;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -36,16 +40,19 @@ public final class SenderUtil {
 
 
     public static Exception handleMissingParameters(Set<String> missingParams) {
-        StringBuffer sb = new StringBuffer();
+        StringBuffer sb = new StringBuffer("Argument");
         if (missingParams != null && !missingParams.isEmpty()) {
+            Set<String> set = new HashSet<String>();
             for (String missingParam : missingParams) {
-                sb.append(missingParam).append(" ");
+                set.add(missingParam);
+//                sb.append(missingParam).append(" ");
             }
+            sb.append(" ").append(ArrayUtils.toString(set));
         }
         return handleRequiredException(sb.toString().trim());
     }
 
     public static IllegalArgumentException handleRequiredException(String message) {
-        return new IllegalArgumentException(message);
+        return new NullArgumentException(message);
     }
 }
