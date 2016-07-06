@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class SenderDispatcher extends AbstractDispatcher {
     private static final Logger LOG = LoggerFactory.getLogger(SenderDispatcher.class);
 
-    public SenderDispatcher(MimeMessage mimeMessage) throws Exception {
+    public SenderDispatcher(MimeMessage mimeMessage) {
         super(mimeMessage);
     }
 

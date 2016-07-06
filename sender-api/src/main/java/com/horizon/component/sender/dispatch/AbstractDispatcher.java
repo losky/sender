@@ -37,7 +37,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
         this.mimeMessage = mimeMessage;
     }
 
-    public AbstractDispatcher(MimeMessage mimeMessage) throws Exception {
+    public AbstractDispatcher(MimeMessage mimeMessage){
         this.mimeMessage = mimeMessage;
 //        this.initial(mimeMessage);
     }
