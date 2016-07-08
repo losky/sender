@@ -65,7 +65,6 @@
     </distributionManagement>
 
 
-
     <profiles>
         <profile>
             <id>hudson</id>
@@ -76,6 +75,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <testFailureIgnore>true</testFailureIgnore>
+                            <skipTests>true</skipTests>
                         </configuration>
                     </plugin>
                 </plugins>
@@ -146,6 +146,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context-support</artifactId>
                 <version>${org.springframework.version}</version>
             </dependency>
 

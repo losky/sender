@@ -23,7 +23,11 @@
             <artifactId>sender-api</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.horizon.component</groupId>
+            <artifactId>sender-default</artifactId>
+            <version>1.0-RELEASE</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

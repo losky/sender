@@ -3,10 +3,20 @@ package com.horizon.component.utilities;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.VelocityException;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.StringUtils;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * Utility class for working with a VelocityEngine.
@@ -16,6 +26,17 @@ import java.util.Map;
  * @date 2016/7/5
  */
 public abstract class VelocityEngineUtils {
+    private static final Logger logger = LoggerFactory.getLogger(VelocityEngineUtils.class);
+
+    private static ResourceLoader resourceLoader = new DefaultResourceLoader();
+
+    public ResourceLoader getResourceLoader() {
+        return resourceLoader;
+    }
+
+    public void setResourceLoader(ResourceLoader resourceLoader) {
+        this.resourceLoader = resourceLoader;
+    }
 
     /**
      * Merge the specified Velocity template with the given model and write the result
@@ -59,4 +80,36 @@ public abstract class VelocityEngineUtils {
         return result.toString();
     }
 
+    public static void initVelocity(VelocityEngine velocityEngine, Properties properties) {
+        initVelocityResourceLoader(velocityEngine, properties.getProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH));
+    }
+
+    protected static void initVelocityResourceLoader(VelocityEngine velocityEngine, String resourceLoaderPath) {
+        // Try to load via the file system, fall back to SpringResourceLoader
+        // (for hot detection of template changes, if possible).
+        try {
+            StringBuilder resolvedPath = new StringBuilder();
+            String[] paths = StringUtils.commaDelimitedListToStringArray(resourceLoaderPath);
+            for (int i = 0; i < paths.length; i++) {
+                String path = paths[i];
+                Resource resource = resourceLoader.getResource(path);
+                File file = resource.getFile();  // will fail if not resolvable in the file system
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Resource loader path [" + path + "] resolved to file [" + file.getAbsolutePath() + "]");
+                }
+                resolvedPath.append(file.getAbsolutePath());
+                if (i < paths.length - 1) {
+                    resolvedPath.append(',');
+                }
+            }
+            velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "file");
+            velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_CACHE, "true");
+            velocityEngine.setProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH, resolvedPath.toString());
+        } catch (IOException ex) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Cannot resolve resource loader path [" + resourceLoaderPath +
+                        "] to [java.io.File]", ex);
+            }
+        }
+    }
 }

@@ -18,6 +18,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
+        String path="file:/F:/IdeaProjects/GRProjects/ApiBay/api/artifacts/grapi-apibay/RestCoreApi/target/RestCoreApi/WEB-INF/classes/";
+        System.out.println(path.lastIndexOf("file:/"));
+        path = path.replace("file:/","");
+        System.out.println(path);
+
         System.out.println(Main.class.getResource("/"));
         System.out.println(Main.class.getClassLoader().getResource(""));
         if (args == null || args.length == 0) {
