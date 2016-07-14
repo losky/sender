@@ -2,6 +2,7 @@ package com.horizon.component.sender.ui.velocity;
 
 import com.horizon.component.utilities.ClassUtils;
 import org.apache.commons.collections.ExtendedProperties;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.exception.VelocityException;
 import org.apache.velocity.io.UnicodeInputStream;
@@ -10,7 +11,6 @@ import org.apache.velocity.runtime.resource.loader.ResourceLoader;
 import org.apache.velocity.util.StringUtils;
 
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -48,21 +48,26 @@ public class FileResourceLoader extends ResourceLoader {
             log.trace("FileResourceLoader : initialization starting.");
         }
         classLoader = ClassUtils.getDefaultClassLoader();
-        URL url = classLoader.getResource("/");
-        if(url.getProtocol().equalsIgnoreCase("file")){
+        String rootPath = classLoader.getResource("/").getFile();
+        //if (rootPath.startsWith("/")) rootPath = rootPath.substring(1);
+        if (rootPath.endsWith("WEB-INF/classes/"))
+            rootPath = rootPath.substring(0, rootPath.lastIndexOf("WEB-INF/classes/"));
 
+        Vector<String> path = configuration.getVector("path");
+        List<String> resetPath = new Vector<String>();
+        for (String relativePath : path) {
+            if (relativePath.startsWith("/")) {
+                relativePath = rootPath + relativePath.substring(1);
+            } else {
+                relativePath = rootPath + relativePath;
+            }
+
+            if (!relativePath.endsWith("/")) relativePath = relativePath + File.separator;
+
+            resetPath.add(relativePath);
         }
-        log.info(classLoader.getResource(""));
-        log.info(classLoader.getResource("/"));
-        log.info(classLoader.getResource((String) configuration.getVector("path").get(0)));
-
-//        Vector<String> path = configuration.getVector("path");
-//        for (String relativePath : path) {
-//            if (relativePath.startsWith("/")) {
-//                classLoader.getResource("")
-//            }
-//        }
-
+        log.info("Load velocity template: " + ArrayUtils.toString(resetPath));
+        configuration.setProperty("path", resetPath);
         paths.addAll(configuration.getVector("path"));
 
         // unicode files may have a BOM marker at the start, but Java

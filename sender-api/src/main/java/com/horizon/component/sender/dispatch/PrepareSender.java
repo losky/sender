@@ -4,12 +4,13 @@ package com.horizon.component.sender.dispatch;
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.Validator;
 import com.horizon.component.sender.basic.DefaultValidator;
-import com.horizon.component.utilities.SpringContextUtil;
 import com.horizon.component.utilities.VelocityEngineUtils;
 import org.apache.velocity.app.VelocityEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.util.Properties;
 import java.util.ServiceLoader;
 
 /**
@@ -27,19 +28,20 @@ public class PrepareSender {
         this.mimeMessage = mimeMessage;
     }
 
-    private transient VelocityEngine velocityEngine = SpringContextUtil.getBean("velocityEngine", VelocityEngine.class);
+    private static VelocityEngine velocityEngine;
+//    private transient VelocityEngine velocityEngine = SpringContextUtil.getBean("velocityEngine", VelocityEngine.class);
 
-//    static {
-//        Properties properties = new Properties();
-//        try {
-//            LOG.info("Initialize the template config.");
-//            properties.load(PrepareSender.class.getClassLoader().getResourceAsStream("velocity.properties_bak"));
-//        } catch (IOException e) {
-//            LOG.error("Load config file error: {}", e.toString());
-//        }
-//        velocityEngine = new VelocityEngine(properties);
-//        velocityEngine.init();
-//    }
+    static {
+        Properties properties = new Properties();
+        try {
+            LOG.info("Initialize the template config.");
+            properties.load(PrepareSender.class.getClassLoader().getResourceAsStream("velocity.properties"));
+        } catch (IOException e) {
+            LOG.error("Load config file error: {}", e.toString());
+        }
+        velocityEngine = new VelocityEngine(properties);
+        velocityEngine.init();
+    }
 
     /**
      * Get content from template if the content is null

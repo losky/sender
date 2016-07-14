@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.rmi.ServerException;
 import java.util.Properties;
 
 public class SmsSender implements Sender<MimeMessage> {
@@ -53,7 +54,7 @@ public class SmsSender implements Sender<MimeMessage> {
      * @throws Exception
      */
     @Override
-    public void send(MimeMessage mimeMessage) throws Exception {
+    public void send(MimeMessage mimeMessage) throws ServerException {
         LOG.info("Prepare sender sms config:{}", mimeMessage.toString());
 
         String temp[];
@@ -64,13 +65,13 @@ public class SmsSender implements Sender<MimeMessage> {
             RtnStr = HttpClientConnection.getHttpResponse(url);
         } catch (Exception e) {
             LOG.error("SMS send failed: Case:{}", e.getCause());
-            throw e;
+            throw new ServerException(e.getMessage());
         }
         LOG.debug("<SmsSender> return: " + RtnStr.toString());
         temp = (RtnStr.toString()).split("\n");
         if (!(temp[1] != null && (temp[1].trim()).equals("retcode=1000"))) {
             LOG.error("send sms failed.");
-            throw new Exception("send sms failed." + ArrayUtils.toString(temp));
+            throw new ServerException("send sms failed." + ArrayUtils.toString(temp));
         }
         LOG.info("send sms successful.");
     }

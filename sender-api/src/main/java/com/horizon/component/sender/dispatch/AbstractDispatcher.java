@@ -8,8 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ServiceLoader;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 
 /**
  * interface defined by
@@ -37,7 +35,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
         this.mimeMessage = mimeMessage;
     }
 
-    public AbstractDispatcher(MimeMessage mimeMessage){
+    public AbstractDispatcher(MimeMessage mimeMessage) {
         this.mimeMessage = mimeMessage;
 //        this.initial(mimeMessage);
     }
@@ -62,28 +60,44 @@ public abstract class AbstractDispatcher implements Dispatcher {
             throw new NullPointerException("Not found Sender \'" + mimeMessage.getSendType() + "\'.");
         }
         if (sync) {
-            sender.send(mimeMessage);
+            try {
+                sender.send(mimeMessage);
+            } catch (Exception e) {
+                LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
+                throw e;
+            }
         } else {
-            Future<String> result = taskExecutor.submit(new Callable<String>() {
-                /**
-                 * Computes a result, or throws an exception if unable to do so.
-                 *
-                 * @return computed result
-                 *
-                 * @throws Exception if unable to compute a result
-                 */
+//            Future<String> result = taskExecutor.submit(new Callable<String>() {
+//                /**
+//                 * Computes a result, or throws an exception if unable to do so.
+//                 *
+//                 * @return computed result
+//                 *
+//                 * @throws Exception if unable to compute a result
+//                 */
+//                @Override
+//                public String call() throws Exception {
+//                    try {
+//                        sender.send(mimeMessage);
+//                    } catch (Exception e) {
+//                        LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
+//                        return e.getMessage();
+//                    }
+//                    return "success";
+//                }
+//            });
+//            LOG.info("result: {}", result.get());
+
+            taskExecutor.execute(new Runnable() {
                 @Override
-                public String call() throws Exception {
+                public void run() {
                     try {
                         sender.send(mimeMessage);
                     } catch (Exception e) {
                         LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
-                        return e.getMessage();
                     }
-                    return "success";
                 }
             });
-            LOG.info("result: {}", result.get());
         }
     }
 

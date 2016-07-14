@@ -18,9 +18,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        String path="file:/F:/IdeaProjects/GRProjects/ApiBay/api/artifacts/grapi-apibay/RestCoreApi/target/RestCoreApi/WEB-INF/classes/";
-        System.out.println(path.lastIndexOf("file:/"));
-        path = path.replace("file:/","");
+        String path="/F:/IdeaProjects/GRProjects/ApiBay/api/artifacts/grapi-apibay/RestCoreApi/target/RestCoreApi/WEB-INF/classes/";
+        if (path.startsWith("/")) path = path.substring(1);
+        if (path.endsWith("WEB-INF/classes/"))
+            path = path.substring(0, path.lastIndexOf("WEB-INF/classes/"));
         System.out.println(path);
 
         System.out.println(Main.class.getResource("/"));
