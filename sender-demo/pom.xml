@@ -12,7 +12,7 @@
     <groupId>com.horizon.component</groupId>
     <artifactId>sender-demo</artifactId>
     <packaging>pom</packaging>
-    <version>>${project.parent.version}</version>
+    <version>${project.parent.version}</version>
 
     <properties>
         <skip_maven_deploy>true</skip_maven_deploy>
