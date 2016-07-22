@@ -22,6 +22,8 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
 
     private static final Session SESSION;
 
+    private static final String from;
+
     static {
         Properties properties = new Properties();
         try {
@@ -30,6 +32,7 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
         } catch (IOException e) {
             LOG.error("Load config file error: {}", e.toString());
         }
+        from = properties.getProperty("mail.from");
         SESSION = Session.getDefaultInstance(properties,
                 new EmailAuthenticator(properties.getProperty("mail.username"), properties.getProperty("mail.password")));
         LOG.info("Connect to the mail server ==> {}", properties.get("mail.smtp.host") + ":" + properties.get("mail.smtp.port"));
@@ -37,7 +40,7 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
 
     private void prepare(String from, String to, String subject, String content) throws MessagingException {
         MimeMessage mailMessage = new MimeMessage(SESSION);
-        mailMessage.setFrom(new InternetAddress(from == null ? "system@gnum.com" : from));
+        mailMessage.setFrom(new InternetAddress(from == null ? (this.from == null ? "do-not-replay@system.com" : this.from) : from));
         // Message.RecipientType.TO属性表示接收者的类型为TO
         mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         mailMessage.setSubject(subject == null ? "System notification" : subject, "UTF-8");
