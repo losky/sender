@@ -7,7 +7,7 @@
     <groupId>com.horizon.component</groupId>
     <artifactId>sender-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-RELEASE</version>
+    <version>1.1-RELEASE</version>
 
     <inceptionYear>2016</inceptionYear>
     <licenses>
@@ -33,6 +33,7 @@
     </modules>
 
     <properties>
+
         <skip_maven_deploy>true</skip_maven_deploy>
         <!-- for maven compiler plugin -->
         <java_source_version>1.6</java_source_version>

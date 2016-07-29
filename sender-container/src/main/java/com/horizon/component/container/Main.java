@@ -52,8 +52,7 @@ public class Main {
         }
         Dispatcher dispatcher = null;
         try {
-            dispatcher = new SenderDispatcher(mimeMessage);
-            dispatcher.dispatch(true);
+            SenderDispatcher.getInstance().dispatch(mimeMessage,true);
         } catch (Exception e) {
             e.printStackTrace();
         }

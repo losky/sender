@@ -13,5 +13,5 @@ public interface Dispatcher {
      *
      * @throws Exception
      */
-    void dispatch(boolean sync) throws Exception;
+    void dispatch(MimeMessage mimeMessage, boolean sync) throws Exception;
 }

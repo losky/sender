@@ -1,6 +1,7 @@
 package com.horizon.component.sender.dispatch;
 
 
+import com.horizon.component.sender.Dispatcher;
 import com.horizon.component.sender.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,19 @@ import org.slf4j.LoggerFactory;
 public class SenderDispatcher extends AbstractDispatcher {
     private static final Logger LOG = LoggerFactory.getLogger(SenderDispatcher.class);
 
-    public SenderDispatcher(MimeMessage mimeMessage) {
-        super(mimeMessage);
+    // private static SenderDispatcher dispatcher = new SenderDispatcher();
+
+    private static class DispatcherHolder {
+        private static final SenderDispatcher INSTANCE = new SenderDispatcher();
     }
+
+    private SenderDispatcher() {
+    }
+
+    public static final Dispatcher getInstance() {
+        return DispatcherHolder.INSTANCE;
+    }
+
 
     /**
      * initial the handlers that implement from interface handler
@@ -25,8 +36,8 @@ public class SenderDispatcher extends AbstractDispatcher {
         new PrepareSender(mimeMessage).validate().ParseTemplateContent();
     }
 
-    public void dispatch() throws Exception {
-        super.dispatch(true);
+    public void dispatch(MimeMessage mimeMessage) throws Exception {
+        super.dispatch(mimeMessage, true);
     }
 
 }
