@@ -7,7 +7,7 @@
     <parent>
         <artifactId>sender-parent</artifactId>
         <groupId>com.horizon.component</groupId>
-        <version>1.1-RELEASE</version>
+        <version>1.1.1-RELEASE</version>
     </parent>
 
     <groupId>com.horizon.component</groupId>
@@ -31,6 +31,11 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
         </dependency>
     </dependencies>
 

@@ -17,6 +17,8 @@ public class SenderDispatcher extends AbstractDispatcher {
 
     // private static SenderDispatcher dispatcher = new SenderDispatcher();
 
+    private PrepareSender prepareSender = new PrepareSender();
+
     private static class DispatcherHolder {
         private static final SenderDispatcher INSTANCE = new SenderDispatcher();
     }
@@ -33,7 +35,7 @@ public class SenderDispatcher extends AbstractDispatcher {
      * initial the handlers that implement from interface handler
      */
     protected void initial(MimeMessage mimeMessage) throws Exception {
-        new PrepareSender(mimeMessage).validate().ParseTemplateContent();
+        prepareSender.validate(mimeMessage).ParseTemplateContent(mimeMessage);
     }
 
     public void dispatch(MimeMessage mimeMessage) throws Exception {

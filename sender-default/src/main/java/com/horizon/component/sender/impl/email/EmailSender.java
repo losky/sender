@@ -53,6 +53,9 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
         html.setContent(content.trim(), "text/html; charset=utf-8");
         mainPart.addBodyPart(html);
         mailMessage.setContent(mainPart);
+        mailMessage.addHeader("X-Mailer", "Microsoft Outlook Express 6.00.2900.2869");
+        mailMessage.addHeader("X-MimeOLE", "Produced By Microsoft MimeOLE V6.00.2900.2869");
+
         Transport.send(mailMessage);
     }
 

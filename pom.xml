@@ -7,7 +7,7 @@
     <groupId>com.horizon.component</groupId>
     <artifactId>sender-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1-RELEASE</version>
+    <version>1.1.1.1-RELEASE</version>
 
     <inceptionYear>2016</inceptionYear>
     <licenses>
@@ -30,11 +30,12 @@
         <module>Horizon-Container</module>
         <module>sender-container</module>
         <module>sender-demo</module>
+        <module>sender-test-web</module>
     </modules>
 
     <properties>
 
-        <skip_maven_deploy>true</skip_maven_deploy>
+        <skip_maven_deploy>false</skip_maven_deploy>
         <!-- for maven compiler plugin -->
         <java_source_version>1.6</java_source_version>
         <java_target_version>1.6</java_target_version>
@@ -155,6 +156,11 @@
                 <version>${org.springframework.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-test</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
             <!-- jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

@@ -16,6 +16,8 @@ public class Template {
     private String templateId;
     private String language;
     private Map<String, Object> model;
+    private boolean parseTemplateName = true;
+
 
     public String getLanguage() {
         return language;
@@ -41,12 +43,21 @@ public class Template {
         this.templateId = templateId;
     }
 
+    public boolean isParseTemplateName() {
+        return parseTemplateName;
+    }
+
+    public void setParseTemplateName(boolean parseTemplateName) {
+        this.parseTemplateName = parseTemplateName;
+    }
+
     @Override
     public String toString() {
         return "Template{" +
                 "language='" + language + '\'' +
                 ", templateId='" + templateId + '\'' +
                 ", model=" + model +
+                ", parseTemplateName=" + parseTemplateName +
                 '}';
     }
 }

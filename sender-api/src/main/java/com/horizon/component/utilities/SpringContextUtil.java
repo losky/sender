@@ -4,6 +4,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
 
 /**
  * interface defined by
@@ -11,7 +13,8 @@ import org.springframework.context.ApplicationContextAware;
  * @author ZhenZhong
  * @date 2016/7/8
  */
-//@Component
+@Component
+@Order
 public class SpringContextUtil implements ApplicationContextAware {
     private static ApplicationContext applicationContext;
 
@@ -19,7 +22,7 @@ public class SpringContextUtil implements ApplicationContextAware {
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        applicationContext = applicationContext;
+        this.applicationContext = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {

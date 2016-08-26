@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <!-- Common components configuration -->
+    <!-- Thread pool definition for tasks to be executed asynchronously -->
+    <bean id="taskExecutor"
+          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor"
+          p:corePoolSize="5" p:maxPoolSize="10" p:queueCapacity="100"
+          p:waitForTasksToCompleteOnShutdown="true"/>
+
+    <!-- veleocity configuration -->
+    <bean id="velocityEngine"
+          class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="resourceLoaderPath" value="/WEB-INF/template/"/>
+    </bean>
+
+</beans>

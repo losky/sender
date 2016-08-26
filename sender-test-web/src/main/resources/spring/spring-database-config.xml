@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+
+    <!-- support transaction annotation -->
+
+    <!-- Multiple proxool DataSource for business -->
+    <bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+        <property name="alias" value="${db.business.alias}"/>
+        <property name="driver" value="${db.business.driver}"/>
+        <property name="driverUrl" value="${db.business.driverUrl}"/>
+        <property name="user" value="${db.business.user}"/>
+        <property name="password" value="${db.business.password}"/>
+        <property name="houseKeepingSleepTime" value="${db.business.house-keeping-sleep-time}"/>
+        <property name="houseKeepingTestSql" value="${db.business.house-keeping-test-sql}"/>
+        <property name="maximumConnectionCount" value="${db.business.maximum-connection-count}"/>
+        <property name="minimumConnectionCount" value="${db.business.minimum-connection-count}"/>
+        <property name="maximumConnectionLifetime" value="${db.business.maximum-connection-lifetime}"/>
+        <property name="prototypeCount" value="${db.business.prototype-count}"/>
+        <property name="simultaneousBuildThrottle" value="${db.business.simultaneous-build-throttle}"/>
+        <property name="trace" value="${db.business.trace}"/>
+        <property name="verbose" value="${db.business.verbose}"/>
+    </bean>
+
+
+</beans>

@@ -3,9 +3,10 @@ package com.horizon.component.sender.dispatch;
 import com.horizon.component.sender.Dispatcher;
 import com.horizon.component.sender.MimeMessage;
 import com.horizon.component.sender.Sender;
+import com.horizon.component.utilities.SpringContextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.core.task.TaskExecutor;
 
 import java.util.ServiceLoader;
 
@@ -19,15 +20,15 @@ public abstract class AbstractDispatcher implements Dispatcher {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDispatcher.class);
     private static final ServiceLoader<Sender> sl = ServiceLoader.load(Sender.class);
 
-    private static final ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-
-    static {
-        taskExecutor.setCorePoolSize(5);
-        taskExecutor.setMaxPoolSize(10);
-        taskExecutor.setQueueCapacity(100);
-        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
-        taskExecutor.initialize();
-    }
+    private TaskExecutor taskExecutor = SpringContextUtil.getBean("taskExecutor", TaskExecutor.class);
+//
+//    static {
+//        taskExecutor.setCorePoolSize(5);
+//        taskExecutor.setMaxPoolSize(10);
+//        taskExecutor.setQueueCapacity(100);
+//        taskExecutor.setWaitForTasksToCompleteOnShutdown(true);
+//        taskExecutor.initialize();
+//    }
 
 
     /**
@@ -57,6 +58,9 @@ public abstract class AbstractDispatcher implements Dispatcher {
                 throw e;
             }
         } else {
+            if (taskExecutor == null) {
+                throw new NullPointerException("No such bean '" + taskExecutor.getClass().getSimpleName() + "' found in application context.");
+            }
             taskExecutor.execute(new Runnable() {
                 @Override
                 public void run() {
