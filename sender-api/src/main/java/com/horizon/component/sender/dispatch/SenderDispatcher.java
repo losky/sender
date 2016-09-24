@@ -35,7 +35,19 @@ public class SenderDispatcher extends AbstractDispatcher {
      * initial the handlers that implement from interface handler
      */
     protected void initial(MimeMessage mimeMessage) throws Exception {
-        prepareSender.validate(mimeMessage).ParseTemplateContent(mimeMessage);
+        prepareSender.validate(mimeMessage);
+    }
+
+    /**
+     * parse message from file or db
+     *
+     * @param mimeMessage
+     *
+     * @throws Exception
+     */
+    @Override
+    protected void parseMessage(MimeMessage mimeMessage) throws Exception {
+        prepareSender.ParseTemplateContent(mimeMessage);
     }
 
     public void dispatch(MimeMessage mimeMessage) throws Exception {

@@ -1,3 +1,4 @@
 com.horizon.component.sender.impl.email.EmailValidator
 com.horizon.component.sender.impl.sms.SmsValidator
 com.horizon.component.sender.impl.voice.VoiceValidator
+com.horizon.component.sender.impl.qq.QQValidator

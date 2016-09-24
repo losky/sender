@@ -1,3 +1,4 @@
 com.horizon.component.sender.impl.email.EmailSender
 com.horizon.component.sender.impl.sms.SmsSender
 com.horizon.component.sender.impl.voice.VoiceSender
+com.horizon.component.sender.impl.qq.QQSender

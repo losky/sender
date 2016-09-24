@@ -37,6 +37,15 @@ public abstract class AbstractDispatcher implements Dispatcher {
     protected abstract void initial(MimeMessage mimeMessage) throws Exception;
 
     /**
+     * parse message from file or db
+     *
+     * @param mimeMessage
+     *
+     * @throws Exception
+     */
+    protected abstract void parseMessage(MimeMessage mimeMessage) throws Exception;
+
+    /**
      * auto get the handler to send the sender
      *
      * @param sync
@@ -46,31 +55,18 @@ public abstract class AbstractDispatcher implements Dispatcher {
     @Override
     public void dispatch(final MimeMessage mimeMessage, boolean sync) throws Exception {
         this.initial(mimeMessage);
+
         final Sender sender = getSender(mimeMessage.getSendType().toLowerCase());
         if (sender == null) {
             throw new NullPointerException("Not found Sender \'" + mimeMessage.getSendType() + "\'.");
         }
+
+        this.parseMessage(mimeMessage);
+
         if (sync) {
-            try {
-                sender.send(mimeMessage);
-            } catch (Exception e) {
-                LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
-                throw e;
-            }
+            syncSend(sender, mimeMessage);
         } else {
-            if (taskExecutor == null) {
-                throw new NullPointerException("No such bean '" + taskExecutor.getClass().getSimpleName() + "' found in application context.");
-            }
-            taskExecutor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        sender.send(mimeMessage);
-                    } catch (Exception e) {
-                        LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
-                    }
-                }
-            });
+            asyncSend(sender, mimeMessage);
         }
     }
 
@@ -90,5 +86,30 @@ public abstract class AbstractDispatcher implements Dispatcher {
             }
         }
         throw new NullPointerException("Not supported sender \'" + sendType + "\'.");
+    }
+
+    private void syncSend(final Sender sender, final MimeMessage mimeMessage) throws Exception {
+        try {
+            sender.send(mimeMessage);
+        } catch (Exception e) {
+            LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
+            throw e;
+        }
+    }
+
+    private void asyncSend(final Sender sender, final MimeMessage mimeMessage) throws Exception {
+        if (taskExecutor == null) {
+            throw new NullPointerException("No such bean '" + taskExecutor.getClass().getSimpleName() + "' found in application context.");
+        }
+        taskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    sender.send(mimeMessage);
+                } catch (Exception e) {
+                    LOG.error("Send " + mimeMessage.getSendType() + " failed. The case: {}", e.getMessage());
+                }
+            }
+        });
     }
 }
