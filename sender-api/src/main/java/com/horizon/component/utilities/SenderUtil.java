@@ -39,7 +39,7 @@ public final class SenderUtil {
     }
 
 
-    public static Exception handleMissingParameters(Set<String> missingParams) {
+    public static IllegalArgumentException handleMissingParameters(Set<String> missingParams) {
         StringBuffer sb = new StringBuffer("Argument");
         if (missingParams != null && !missingParams.isEmpty()) {
             Set<String> set = new HashSet<String>();

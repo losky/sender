@@ -1,6 +1,5 @@
 package com.horizon.component.sender;
 
-import java.rmi.ServerException;
 
 /**
  * interface defined by
@@ -10,12 +9,12 @@ import java.rmi.ServerException;
  */
 public interface Validator<T extends MimeMessage> {
 
-    boolean isSupported(String type) throws Exception;
+    boolean isSupported(String type) throws UnsupportedOperationException;
 
     /**
      * validate the handler
      *
-     * @throws ServerException
+     * @throws Exception
      */
     void validate(T mimeMessage) throws Exception;
 
@@ -26,7 +25,7 @@ public interface Validator<T extends MimeMessage> {
      *
      * @throws Exception
      */
-    void validateRequiredParameters(T mimeMessage) throws Exception;
+    void validateRequiredParameters(T mimeMessage) throws IllegalArgumentException;
 
     /**
      * validate the template parameters
@@ -35,7 +34,7 @@ public interface Validator<T extends MimeMessage> {
      *
      * @throws Exception
      */
-    void validateTemplateParameters(T mimeMessage) throws Exception;
+    void validateTemplateParameters(T mimeMessage) throws IllegalArgumentException;
 
     /**
      * validate the invalid parameters
@@ -44,6 +43,6 @@ public interface Validator<T extends MimeMessage> {
      *
      * @throws Exception
      */
-    void validateInvalidParameters(T mimeMessage) throws Exception;
+    void validateInvalidParameters(T mimeMessage) throws IllegalArgumentException;
 
 }

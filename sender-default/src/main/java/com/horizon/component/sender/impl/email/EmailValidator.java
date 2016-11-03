@@ -22,7 +22,7 @@ public class EmailValidator extends AbstractValidator<MimeMessage> {
     }
 
     @Override
-    public boolean isSupported(String type) throws Exception {
+    public boolean isSupported(String type) {
         return "email".equalsIgnoreCase(type) ? true : false;
     }
 
@@ -34,7 +34,7 @@ public class EmailValidator extends AbstractValidator<MimeMessage> {
      * @throws Exception
      */
     @Override
-    public void validateInvalidParameters(MimeMessage mimeMessage) throws Exception {
+    public void validateInvalidParameters(MimeMessage mimeMessage) {
         if (!isValidEmail(mimeMessage.getTo()))
             throw new IllegalArgumentException("Illegal email!");
     }

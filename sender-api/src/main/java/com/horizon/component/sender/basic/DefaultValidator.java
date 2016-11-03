@@ -18,7 +18,7 @@ public class DefaultValidator extends AbstractValidator<MimeMessage> {
     }
 
     @Override
-    public boolean isSupported(String type) throws Exception {
+    public boolean isSupported(String type) {
         return true;
     }
 
@@ -30,7 +30,7 @@ public class DefaultValidator extends AbstractValidator<MimeMessage> {
      * @throws Exception
      */
     @Override
-    public void validateInvalidParameters(MimeMessage mimeMessage) throws Exception {
+    public void validateInvalidParameters(MimeMessage mimeMessage) {
 
     }
 

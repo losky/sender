@@ -11,7 +11,7 @@ import com.horizon.component.sender.validation.AbstractValidator;
  */
 public class QQValidator extends AbstractValidator<MimeMessage> {
     @Override
-    public boolean isSupported(String type) throws Exception {
+    public boolean isSupported(String type) {
         if (type.equalsIgnoreCase("QQ"))
             return true;
         return false;
@@ -25,7 +25,7 @@ public class QQValidator extends AbstractValidator<MimeMessage> {
      * @throws Exception
      */
     @Override
-    public void validateInvalidParameters(MimeMessage mimeMessage) throws Exception {
+    public void validateInvalidParameters(MimeMessage mimeMessage) {
         System.out.println("validate qq successful.");
     }
 }

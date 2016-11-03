@@ -77,7 +77,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
      *
      * @throws Exception
      */
-    private final Sender getSender(String type) throws Exception {
+    private final Sender getSender(String type) throws UnsupportedOperationException {
         final String sendType = type;
         for (Sender sender : sl) {
             if (sender.isSupported(sendType)) {
@@ -85,7 +85,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
                 return sender;
             }
         }
-        throw new NullPointerException("Not supported sender \'" + sendType + "\'.");
+        throw new UnsupportedOperationException("Not supported sender \'" + sendType + "\'.");
     }
 
     private void syncSend(final Sender sender, final MimeMessage mimeMessage) throws Exception {
@@ -97,7 +97,7 @@ public abstract class AbstractDispatcher implements Dispatcher {
         }
     }
 
-    private void asyncSend(final Sender sender, final MimeMessage mimeMessage) throws Exception {
+    private void asyncSend(final Sender sender, final MimeMessage mimeMessage) {
         if (taskExecutor == null) {
             throw new NullPointerException("No such bean '" + taskExecutor.getClass().getSimpleName() + "' found in application context.");
         }

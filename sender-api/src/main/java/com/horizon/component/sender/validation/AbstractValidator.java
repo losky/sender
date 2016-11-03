@@ -50,7 +50,7 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      * @throws Exception
      */
     @Override
-    public void validateRequiredParameters(T mimeMessage) throws Exception {
+    public void validateRequiredParameters(T mimeMessage) {
         LOG.info("Validate required parameters {}", requiredParams);
         final Set<String> missingParameters = new HashSet<String>();
         Map<String, String> parameters = new HashMap<String, String>();
@@ -82,7 +82,7 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      * @throws Exception
      */
     @Override
-    public void validateTemplateParameters(T mimeMessage) throws Exception {
+    public void validateTemplateParameters(T mimeMessage) {
         LOG.info("Validate template parameters {}", templateParams);
         final Set<String> missingParameters = new HashSet<String>();
         if (mimeMessage.getContent() == null || mimeMessage.getContent().length() == 0) {
