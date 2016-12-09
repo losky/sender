@@ -12,9 +12,7 @@ import com.horizon.component.sender.validation.AbstractValidator;
 public class QQValidator extends AbstractValidator<MimeMessage> {
     @Override
     public boolean isSupported(String type) {
-        if (type.equalsIgnoreCase("QQ"))
-            return true;
-        return false;
+        return type.equalsIgnoreCase("QQ");
     }
 
     /**

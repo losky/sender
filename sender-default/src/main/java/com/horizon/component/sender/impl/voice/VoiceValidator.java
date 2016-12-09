@@ -23,7 +23,7 @@ public class VoiceValidator extends AbstractValidator<MimeMessage> {
 
     @Override
     public boolean isSupported(String type) {
-        return "voice".equalsIgnoreCase(type) ? true : false;
+        return "voice".equalsIgnoreCase(type);
     }
 
     /**

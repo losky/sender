@@ -23,7 +23,7 @@ public class SmsValidator extends AbstractValidator<MimeMessage> {
 
     @Override
     public boolean isSupported(String type) {
-        return "email".equalsIgnoreCase(type) ? true : false;
+        return "sms".equalsIgnoreCase(type);
     }
 
     /**
