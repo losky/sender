@@ -43,7 +43,8 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
         from = from == null ? (this.from == null ? "do-not-replay@system.com" : this.from) : from;
         mailMessage.setFrom(new InternetAddress(from));
         // Message.RecipientType.TO属性表示接收者的类型为TO
-        mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+//        mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
+        mailMessage.setRecipients(Message.RecipientType.TO, to);
         mailMessage.setSubject(subject == null ? "System notification" : subject, "UTF-8");
         mailMessage.setSentDate(new Date());
         // MiniMultipart类是一个容器类，包含MimeBodyPart类型的对象
@@ -73,7 +74,7 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
         try {
             prepare(mimeMessage.getFrom(), mimeMessage.getTo(), mimeMessage.getSubject(), mimeMessage.getContent());
         } catch (Exception e) {
-            LOG.error("send email failed.{}", e.getCause());
+            LOG.error("send email failed. {}", e);
             throw e;
         }
         LOG.info("Send email successfully.");

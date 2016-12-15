@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
 import java.io.IOException;
 import java.rmi.ServerException;
 import java.util.*;
@@ -103,11 +105,19 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
     }
 
     protected boolean isValidEmail(String email) {
-        if (!Pattern
-                .compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")
-                .matcher(email).matches()) {
+        try {
+            InternetAddress[] addresses = InternetAddress.parse(email);
+            for (InternetAddress address : addresses) {
+                if (!Pattern
+                        .compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")
+                        .matcher(address.getAddress()).matches()) {
+                    return false;
+                }
+            }
+        } catch (AddressException e) {
             return false;
         }
+
         return true;
     }
 
