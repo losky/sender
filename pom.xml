@@ -7,7 +7,7 @@
     <groupId>com.horizon.component</groupId>
     <artifactId>sender-parent</artifactId>
     <packaging>pom</packaging>
-    <version>1.1.1.1-RELEASE</version>
+    <version>1.1.1-RELEASE</version>
 
     <inceptionYear>2016</inceptionYear>
     <licenses>
@@ -40,7 +40,7 @@
         <java_source_version>1.6</java_source_version>
         <java_target_version>1.6</java_target_version>
         <file_encoding>UTF-8</file_encoding>
-        <org.springframework.version>4.2.0.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.4.RELEASE</org.springframework.version>
 
         <project.build.sourceEncoding>${file_encoding}</project.build.sourceEncoding>
 
@@ -147,6 +147,11 @@
             <!-- spring -->
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <version>${org.springframework.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
                 <version>${org.springframework.version}</version>
             </dependency>
@@ -161,6 +166,7 @@
                 <artifactId>spring-test</artifactId>
                 <version>${org.springframework.version}</version>
             </dependency>
+
             <!-- jackson -->
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -172,6 +178,7 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>2.4.2</version>
             </dependency>
+
 
             <!-- velocity -->
             <dependency>
@@ -243,7 +250,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.11</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 
