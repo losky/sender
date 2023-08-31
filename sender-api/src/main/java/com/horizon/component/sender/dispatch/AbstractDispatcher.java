@@ -14,7 +14,7 @@ import java.util.ServiceLoader;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/7/3
+ * @date 2016 /7/3
  */
 public abstract class AbstractDispatcher implements Dispatcher {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractDispatcher.class);
@@ -33,15 +33,17 @@ public abstract class AbstractDispatcher implements Dispatcher {
 
     /**
      * initial the handlers that implement from interface handler
+     *
+     * @param mimeMessage the mime message
+     * @throws Exception the exception
      */
     protected abstract void initial(MimeMessage mimeMessage) throws Exception;
 
     /**
      * parse message from file or db
      *
-     * @param mimeMessage
-     *
-     * @throws Exception
+     * @param mimeMessage the mime message
+     * @throws Exception the exception
      */
     protected abstract void parseMessage(MimeMessage mimeMessage) throws Exception;
 

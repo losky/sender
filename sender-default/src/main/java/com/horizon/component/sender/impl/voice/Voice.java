@@ -1,53 +1,37 @@
 package com.horizon.component.sender.impl.voice;
 
+import lombok.Data;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 /**
  * Created by zhenzhong on 2015/9/24.
  */
+@Data
 public class Voice {
 
+    /**
+     * The Url.
+     */
     public String url;
+    /**
+     * The Service.
+     */
     public String service;
+    /**
+     * The Receiver.
+     */
     public String receiver;
+    /**
+     * The Content.
+     */
     public String content;
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(String receiver) {
-        this.receiver = receiver;
-    }
-
-    public String getService() {
-        return service;
-    }
-
-    public void setService(String service) {
-        this.service = service;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         try {
             buffer.append(url).append("?service=").append(service)
                     .append("&id=").append(receiver)

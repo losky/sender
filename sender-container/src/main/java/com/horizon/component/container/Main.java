@@ -12,16 +12,25 @@ import java.net.URL;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/7/5
+ * @date 2016 /7/5
  */
 public class Main {
 
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     * @throws IOException the io exception
+     */
     public static void main(String[] args) throws IOException {
 
         String path="/F:/IdeaProjects/GRProjects/ApiBay/api/artifacts/grapi-apibay/RestCoreApi/target/RestCoreApi/WEB-INF/classes/";
-        if (path.startsWith("/")) path = path.substring(1);
-        if (path.endsWith("WEB-INF/classes/"))
+        if (path.startsWith("/")) {
+            path = path.substring(1);
+        }
+        if (path.endsWith("WEB-INF/classes/")) {
             path = path.substring(0, path.lastIndexOf("WEB-INF/classes/"));
+        }
         System.out.println(path);
 
         System.out.println(Main.class.getResource("/"));
@@ -30,7 +39,9 @@ public class Main {
             args = new String[]{"demo/message.txt"};
         }
         URL url = Main.class.getClassLoader().getResource(args[0]);
-        if (url == null) throw new FileNotFoundException("Can not find the message \'" + args[0] + "\' file.");
+        if (url == null) {
+            throw new FileNotFoundException("Can not find the message \'" + args[0] + "\' file.");
+        }
         String message;
         BufferedReader reader = new BufferedReader(new FileReader(new File(url.getFile())));
         StringBuffer buffer = new StringBuffer();
@@ -39,8 +50,9 @@ public class Main {
                 buffer.append(message);
             }
         } finally {
-            if (reader != null)
+            if (reader != null) {
                 reader.close();
+            }
         }
 
         ObjectMapper mapper = new ObjectMapper();

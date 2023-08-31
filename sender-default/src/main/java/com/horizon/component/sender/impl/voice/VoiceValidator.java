@@ -10,12 +10,15 @@ import org.slf4j.LoggerFactory;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/6/16
+ * @date 2016 /6/16
  */
 public class VoiceValidator extends AbstractValidator<MimeMessage> {
 
     private static final Logger LOG = LoggerFactory.getLogger(VoiceValidator.class);
 
+    /**
+     * Instantiates a new Voice validator.
+     */
     public VoiceValidator() {
         requiredParams.add("send_type");
         requiredParams.add("to");

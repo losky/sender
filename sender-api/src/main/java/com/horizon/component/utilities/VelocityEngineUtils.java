@@ -23,19 +23,29 @@ import java.util.Properties;
  * Provides convenience methods to merge a Velocity template with a model.
  *
  * @author ZhenZhong
- * @date 2016/7/5
+ * @date 2016 /7/5
  */
 public abstract class VelocityEngineUtils {
     private static final Logger logger = LoggerFactory.getLogger(VelocityEngineUtils.class);
 
     private static ResourceLoader resourceLoader = new DefaultResourceLoader();
 
+    /**
+     * Gets resource loader.
+     *
+     * @return the resource loader
+     */
     public ResourceLoader getResourceLoader() {
         return resourceLoader;
     }
 
+    /**
+     * Sets resource loader.
+     *
+     * @param resourceLoader the resource loader
+     */
     public void setResourceLoader(ResourceLoader resourceLoader) {
-        this.resourceLoader = resourceLoader;
+        VelocityEngineUtils.resourceLoader = resourceLoader;
     }
 
     /**
@@ -47,7 +57,6 @@ public abstract class VelocityEngineUtils {
      * @param encoding         the encoding of the template file
      * @param model            the Map that contains model names as keys and model objects as values
      * @param writer           the Writer to write the result to
-     *
      * @throws VelocityException if the template wasn't found or rendering failed
      */
     public static void mergeTemplate(
@@ -67,9 +76,7 @@ public abstract class VelocityEngineUtils {
      * @param templateLocation the location of template, relative to Velocity's resource loader path
      * @param encoding         the encoding of the template file
      * @param model            the Map that contains model names as keys and model objects as values
-     *
      * @return the result as String
-     *
      * @throws VelocityException if the template wasn't found or rendering failed
      */
     public static String mergeTemplateIntoString(VelocityEngine velocityEngine, String templateLocation,
@@ -80,10 +87,22 @@ public abstract class VelocityEngineUtils {
         return result.toString();
     }
 
+    /**
+     * Init velocity.
+     *
+     * @param velocityEngine the velocity engine
+     * @param properties     the properties
+     */
     public static void initVelocity(VelocityEngine velocityEngine, Properties properties) {
         initVelocityResourceLoader(velocityEngine, properties.getProperty(RuntimeConstants.FILE_RESOURCE_LOADER_PATH));
     }
 
+    /**
+     * Init velocity resource loader.
+     *
+     * @param velocityEngine     the velocity engine
+     * @param resourceLoaderPath the resource loader path
+     */
     protected static void initVelocityResourceLoader(VelocityEngine velocityEngine, String resourceLoaderPath) {
         // Try to load via the file system, fall back to SpringResourceLoader
         // (for hot detection of template changes, if possible).

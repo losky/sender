@@ -41,11 +41,12 @@ public class PrepareSender {
     /**
      * Get content from template if the content is null
      *
-     * @throws Exception
+     * @param mimeMessage the mime message
+     * @throws Exception the exception
      */
-    public void ParseTemplateContent(MimeMessage mimeMessage) throws Exception {
+    public void parseTemplateContent(MimeMessage mimeMessage) throws Exception {
         String content = mimeMessage.getContent();
-        if (content != null && content.length() > 0) {
+        if (content != null && !content.isEmpty()) {
             LOG.info("get content from client request.");
         } else {
             if (velocityEngine == null) {
@@ -53,7 +54,7 @@ public class PrepareSender {
             }
             String template;
             if (mimeMessage.getTemplate().isParseTemplateName()) {
-                StringBuffer buffer = new StringBuffer(mimeMessage.getSendType().toLowerCase()).append("_");
+                StringBuilder buffer = new StringBuilder(mimeMessage.getSendType().toLowerCase()).append("_");
                 String[] tempId = mimeMessage.getTemplate().getTemplateId().split("\\.");
                 String lang = "_" + (mimeMessage.getTemplate().getLanguage() == null ? "en" : mimeMessage.getTemplate().getLanguage());
 
@@ -78,9 +79,17 @@ public class PrepareSender {
         mimeMessage.setContent(content);
     }
 
+    /**
+     * Validate prepare sender.
+     *
+     * @param mimeMessage the mime message
+     * @return the prepare sender
+     * @throws Exception the exception
+     */
     public final PrepareSender validate(MimeMessage mimeMessage) throws Exception {
-        if (mimeMessage == null)
+        if (mimeMessage == null) {
             throw new NullPointerException("Mime message is null.");
+        }
         final String sendType = mimeMessage.getSendType();
         for (Validator validator : sl) {
             if (validator.isSupported(sendType)) {

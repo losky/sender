@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/7/4
+ * @date 2016 /7/4
  */
 public class SenderListener implements EventListener {
     private static final Logger LOG = LoggerFactory.getLogger(EventListener.class);

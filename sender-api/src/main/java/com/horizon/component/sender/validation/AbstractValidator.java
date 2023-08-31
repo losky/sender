@@ -19,22 +19,36 @@ import java.util.regex.Pattern;
 /**
  * interface defined by
  *
+ * @param <T> the type parameter
  * @author ZhenZhong
- * @date 2016/6/16
+ * @date 2016 /6/16
  */
 public abstract class AbstractValidator<T extends MimeMessage> implements Validator<T> {
     private static final Logger LOG = LoggerFactory.getLogger(AbstractValidator.class);
+    /**
+     * The constant PATTERN_EMAIL.
+     */
+    public static final Pattern PATTERN_EMAIL = Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+    /**
+     * The constant PATTERN_PHONE.
+     */
+    public static final Pattern PATTERN_PHONE = Pattern.compile("\\+?[0-9]{1,5}\\-?[0-9]{1,14}\\-?[0-9]{1,13}");
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /**
+     * The Required params.
+     */
     protected List<String> requiredParams = new ArrayList<String>();
+    /**
+     * The Template params.
+     */
     protected List<String> templateParams = new ArrayList<String>();
 
     /**
      * validate the handler
      *
      * @param mimeMessage
-     *
      * @throws ServerException
      */
     @Override
@@ -48,7 +62,6 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      * validate the requirement parameters
      *
      * @param mimeMessage
-     *
      * @throws Exception
      */
     @Override
@@ -80,7 +93,6 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
      * validate the template parameters
      *
      * @param mimeMessage
-     *
      * @throws Exception
      */
     @Override
@@ -88,8 +100,9 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
         LOG.info("Validate template parameters {}", templateParams);
         final Set<String> missingParameters = new HashSet<String>();
         if (mimeMessage.getContent() == null || mimeMessage.getContent().length() == 0) {
-            if (mimeMessage.getTemplate() == null || mimeMessage.getTemplate().getModel() == null)
+            if (mimeMessage.getTemplate() == null || mimeMessage.getTemplate().getModel() == null) {
                 throw new NullPointerException("Undefined template.");
+            }
             Map<String, Object> parameters = mimeMessage.getTemplate().getModel();
             for (String templateParam : templateParams) {
                 Object val = parameters.get(templateParam);
@@ -104,12 +117,17 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
         }
     }
 
+    /**
+     * Is valid email boolean.
+     *
+     * @param email the email
+     * @return the boolean
+     */
     protected boolean isValidEmail(String email) {
         try {
             InternetAddress[] addresses = InternetAddress.parse(email);
             for (InternetAddress address : addresses) {
-                if (!Pattern
-                        .compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*")
+                if (!PATTERN_EMAIL
                         .matcher(address.getAddress()).matches()) {
                     return false;
                 }
@@ -121,6 +139,12 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
         return true;
     }
 
+    /**
+     * Is valid mobile no boolean.
+     *
+     * @param mobileNo the mobile no
+     * @return the boolean
+     */
     protected boolean isValidMobileNo(String mobileNo) {
         int numberCount = 0;
         char[] ch = mobileNo.toCharArray();
@@ -130,10 +154,11 @@ public abstract class AbstractValidator<T extends MimeMessage> implements Valida
             }
         }
 
-        if (numberCount < 8 || numberCount > 15)
+        if (numberCount < 8 || numberCount > 15) {
             return false;
+        }
 
-        return Pattern.compile("\\+?[0-9]{1,5}\\-?[0-9]{1,14}\\-?[0-9]{1,13}")
+        return PATTERN_PHONE
                 .matcher(mobileNo).matches();
     }
 }

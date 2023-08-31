@@ -32,12 +32,9 @@ public class HttpClientConnection {
     /**
      * return the response message from the remoting server
      *
-     * @param entity
-     * @param url
-     *
-     * @return
-     *
-     * @throws Exception
+     * @param url the url
+     * @return http response
+     * @throws Exception the exception
      */
     public static StringBuffer getHttpResponse(String url) throws Exception {
         HttpClient httpclient = new DefaultHttpClient();
@@ -46,8 +43,9 @@ public class HttpClientConnection {
         StringBuffer sb;
         try {
             response = httpclient.execute(httpget);
-            if (response.getStatusLine().getStatusCode() >= 400)
+            if (response.getStatusLine().getStatusCode() >= 400) {
                 throw new Exception(response.getStatusLine().toString());
+            }
 
             HttpEntity entity = response.getEntity();
             sb = processEntity(entity);
@@ -67,7 +65,8 @@ public class HttpClientConnection {
     /**
      * convert HttpEntity to StringBuffer
      *
-     * @param entity
+     * @param entity the entity
+     * @return the string buffer
      */
     public static StringBuffer processEntity(HttpEntity entity) {
 
@@ -98,9 +97,10 @@ public class HttpClientConnection {
     /**
      * Specify the URL to send GET requests
      *
-     * @param url   the URL to Send the request
-     * @param param The request parameters, the request parameters should be in
-     *              the form of 'name1=value1&name2=value2'.
+     * @param url       the URL to Send the request
+     * @param param     The request parameters, the request parameters should be in              the form of 'name1=value1&name2=value2'.
+     * @param authToken the auth token
+     * @return the string
      */
     public static String sendGet(String url, String param, String authToken) {
         String result = "";
@@ -141,6 +141,13 @@ public class HttpClientConnection {
         return result;
     }
 
+    /**
+     * Send get string.
+     *
+     * @param url   the url
+     * @param param the param
+     * @return the string
+     */
     public static String sendGet(String url, String param) {
         LOG.info("----------------------HttpServletUtils Get Start--------------------------------");
         LOG.debug("[URL] ==> " + url);
@@ -187,6 +194,13 @@ public class HttpClientConnection {
         return result;
     }
 
+    /**
+     * Send post string.
+     *
+     * @param url   the url
+     * @param param the param
+     * @return the string
+     */
     public static String sendPost(String url, String param) {
         LOG.debug("----------------------HttpServletUtils Post Start--------------------------------");
         LOG.debug("[URL] ==> " + url);
@@ -238,6 +252,13 @@ public class HttpClientConnection {
         return result;
     }
 
+    /**
+     * Send post string.
+     *
+     * @param url       the url
+     * @param parramMap the parram map
+     * @return the string
+     */
     @SuppressWarnings("deprecation")
     public static String sendPost(String url, Map<String, String> parramMap) {
         List<BasicNameValuePair> params = getParrams(parramMap);
@@ -285,6 +306,12 @@ public class HttpClientConnection {
         return xmlStr;
     }
 
+    /**
+     * Gets parrams.
+     *
+     * @param parramMap the parram map
+     * @return the parrams
+     */
     public static List<BasicNameValuePair> getParrams(
             Map<String, String> parramMap) {
         List<BasicNameValuePair> parrams = new ArrayList<BasicNameValuePair>();
@@ -301,6 +328,13 @@ public class HttpClientConnection {
         return parrams;
     }
 
+    /**
+     * Create params string.
+     *
+     * @param parrams the parrams
+     * @param encode  the encode
+     * @return the string
+     */
     public static String createParams(List<BasicNameValuePair> parrams,
                                       String encode) {
         StringBuffer sb = new StringBuffer();

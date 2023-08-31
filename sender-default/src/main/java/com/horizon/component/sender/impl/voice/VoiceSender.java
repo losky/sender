@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Properties;
 
+/**
+ * The type Voice sender.
+ */
 public class VoiceSender implements Sender<MimeMessage> {
 
     private static final Logger LOG = LoggerFactory

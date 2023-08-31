@@ -15,7 +15,8 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- *
+ * The type Email sender.
+ * @author Administrator
  */
 public class EmailSender implements Sender<com.horizon.component.sender.MimeMessage> {
     private static final Logger LOG = LoggerFactory.getLogger(EmailSender.class);
@@ -40,7 +41,7 @@ public class EmailSender implements Sender<com.horizon.component.sender.MimeMess
 
     private void prepare(String from, String to, String subject, String content) throws MessagingException {
         MimeMessage mailMessage = new MimeMessage(SESSION);
-        from = from == null ? (this.from == null ? "do-not-replay@system.com" : this.from) : from;
+        from = from == null ? (EmailSender.from == null ? "do-not-replay@system.com" : EmailSender.from) : from;
         mailMessage.setFrom(new InternetAddress(from));
         // Message.RecipientType.TO属性表示接收者的类型为TO
 //        mailMessage.setRecipient(Message.RecipientType.TO, new InternetAddress(to));

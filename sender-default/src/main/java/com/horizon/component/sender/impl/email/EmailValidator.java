@@ -9,12 +9,15 @@ import org.slf4j.LoggerFactory;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/6/16
+ * @date 2016 /6/16
  */
 public class EmailValidator extends AbstractValidator<MimeMessage> {
 
     private static final Logger LOG = LoggerFactory.getLogger(EmailValidator.class);
 
+    /**
+     * Instantiates a new Email validator.
+     */
     public EmailValidator() {
         requiredParams.add("send_type");
         requiredParams.add("subject");
@@ -35,8 +38,9 @@ public class EmailValidator extends AbstractValidator<MimeMessage> {
      */
     @Override
     public void validateInvalidParameters(MimeMessage mimeMessage) {
-        if (!isValidEmail(mimeMessage.getTo()))
+        if (!isValidEmail(mimeMessage.getTo())) {
             throw new IllegalArgumentException("Illegal email!");
+        }
     }
 
 

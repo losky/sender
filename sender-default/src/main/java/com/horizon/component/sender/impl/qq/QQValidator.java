@@ -7,7 +7,6 @@ import com.horizon.component.sender.validation.AbstractValidator;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/9/7
  */
 public class QQValidator extends AbstractValidator<MimeMessage> {
     @Override

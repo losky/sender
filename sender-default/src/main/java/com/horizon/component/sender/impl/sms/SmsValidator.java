@@ -10,12 +10,15 @@ import org.slf4j.LoggerFactory;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/6/16
+ * @date 2016 /6/16
  */
 public class SmsValidator extends AbstractValidator<MimeMessage> {
 
     private static final Logger LOG = LoggerFactory.getLogger(SmsValidator.class);
 
+    /**
+     * Instantiates a new Sms validator.
+     */
     public SmsValidator() {
         requiredParams.add("send_type");
         requiredParams.add("to");
@@ -35,7 +38,8 @@ public class SmsValidator extends AbstractValidator<MimeMessage> {
      */
     @Override
     public void validateInvalidParameters(MimeMessage mimeMessage) {
-        if (!isValidMobileNo(mimeMessage.getTo()))
+        if (!isValidMobileNo(mimeMessage.getTo())) {
             throw new IllegalArgumentException("Illegal mobile phone!");
+        }
     }
 }

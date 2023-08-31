@@ -7,10 +7,13 @@ import com.horizon.component.sender.validation.AbstractValidator;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/7/3
+ * @date 2016 /7/3
  */
 public class DefaultValidator extends AbstractValidator<MimeMessage> {
 
+    /**
+     * Instantiates a new Default validator.
+     */
     public DefaultValidator() {
         requiredParams.add("send_type");
         requiredParams.add("subject");

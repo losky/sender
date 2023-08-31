@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/6/7
+ * @date 2016 /6/7
  */
 public class SenderDispatcher extends AbstractDispatcher {
     private static final Logger LOG = LoggerFactory.getLogger(SenderDispatcher.class);
@@ -26,6 +26,11 @@ public class SenderDispatcher extends AbstractDispatcher {
     private SenderDispatcher() {
     }
 
+    /**
+     * Gets instance.
+     *
+     * @return the instance
+     */
     public static final Dispatcher getInstance() {
         return DispatcherHolder.INSTANCE;
     }
@@ -34,6 +39,7 @@ public class SenderDispatcher extends AbstractDispatcher {
     /**
      * initial the handlers that implement from interface handler
      */
+    @Override
     protected void initial(MimeMessage mimeMessage) throws Exception {
         prepareSender.validate(mimeMessage);
     }
@@ -47,9 +53,15 @@ public class SenderDispatcher extends AbstractDispatcher {
      */
     @Override
     protected void parseMessage(MimeMessage mimeMessage) throws Exception {
-        prepareSender.ParseTemplateContent(mimeMessage);
+        prepareSender.parseTemplateContent(mimeMessage);
     }
 
+    /**
+     * Dispatch.
+     *
+     * @param mimeMessage the mime message
+     * @throws Exception the exception
+     */
     public void dispatch(MimeMessage mimeMessage) throws Exception {
         super.dispatch(mimeMessage, true);
     }

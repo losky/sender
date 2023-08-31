@@ -34,7 +34,7 @@
         <dependency>
             <groupId>proxool</groupId>
             <artifactId>proxool</artifactId>
-            <version>0.9.1</version>
+            <version>0.8.3</version>
         </dependency>
 
         <dependency>

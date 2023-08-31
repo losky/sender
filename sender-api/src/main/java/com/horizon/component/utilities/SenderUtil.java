@@ -12,15 +12,33 @@ import java.util.Set;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/6/7
+ * @date 2016 /6/7
  */
 public final class SenderUtil {
 
 
+    /**
+     * Instantiate class t.
+     *
+     * @param <T>   the type parameter
+     * @param clazz the clazz
+     * @return the t
+     * @throws Exception the exception
+     */
     public static <T> T instantiateClass(Class<T> clazz) throws Exception {
         return instantiateClassWithParameters(clazz, null, null);
     }
 
+    /**
+     * Instantiate class with parameters t.
+     *
+     * @param <T>         the type parameter
+     * @param clazz       the clazz
+     * @param paramsTypes the params types
+     * @param paramValues the param values
+     * @return the t
+     * @throws Exception the exception
+     */
     public static <T> T instantiateClassWithParameters(Class<T> clazz, Class<?>[] paramsTypes,
                                                        Object[] paramValues) throws Exception {
 
@@ -39,6 +57,12 @@ public final class SenderUtil {
     }
 
 
+    /**
+     * Handle missing parameters illegal argument exception.
+     *
+     * @param missingParams the missing params
+     * @return the illegal argument exception
+     */
     public static IllegalArgumentException handleMissingParameters(Set<String> missingParams) {
         StringBuffer sb = new StringBuffer("Argument");
         if (missingParams != null && !missingParams.isEmpty()) {
@@ -52,6 +76,12 @@ public final class SenderUtil {
         return handleRequiredException(sb.toString().trim());
     }
 
+    /**
+     * Handle required exception illegal argument exception.
+     *
+     * @param message the message
+     * @return the illegal argument exception
+     */
     public static IllegalArgumentException handleRequiredException(String message) {
         return new NullArgumentException(message);
     }

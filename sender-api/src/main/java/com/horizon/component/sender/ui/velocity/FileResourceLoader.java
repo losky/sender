@@ -17,7 +17,7 @@ import java.util.*;
  * interface defined by
  *
  * @author ZhenZhong
- * @date 2016/7/8
+ * @date 2016 /7/8
  */
 public class FileResourceLoader extends ResourceLoader {
     /**
@@ -43,6 +43,7 @@ public class FileResourceLoader extends ResourceLoader {
     /**
      * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#init(org.apache.commons.collections.ExtendedProperties)
      */
+    @Override
     public void init(ExtendedProperties configuration) {
         if (log.isTraceEnabled()) {
             log.trace("FileResourceLoader : initialization starting.");
@@ -50,8 +51,9 @@ public class FileResourceLoader extends ResourceLoader {
         classLoader = ClassUtils.getDefaultClassLoader();
         String rootPath = classLoader.getResource("/").getFile();
         //if (rootPath.startsWith("/")) rootPath = rootPath.substring(1);
-        if (rootPath.endsWith("WEB-INF/classes/"))
+        if (rootPath.endsWith("WEB-INF/classes/")) {
             rootPath = rootPath.substring(0, rootPath.lastIndexOf("WEB-INF/classes/"));
+        }
 
         Vector<String> path = configuration.getVector("path");
         List<String> resetPath = new Vector<String>();
@@ -62,7 +64,9 @@ public class FileResourceLoader extends ResourceLoader {
                 relativePath = rootPath + relativePath;
             }
 
-            if (!relativePath.endsWith("/")) relativePath = relativePath + File.separator;
+            if (!relativePath.endsWith("/")) {
+                relativePath = relativePath + File.separator;
+            }
 
             resetPath.add(relativePath);
         }
@@ -103,6 +107,7 @@ public class FileResourceLoader extends ResourceLoader {
      * @throws ResourceNotFoundException if template not found
      *                                   in the file template path.
      */
+    @Override
     public InputStream getResourceStream(String templateName)
             throws ResourceNotFoundException {
         /*
@@ -166,6 +171,7 @@ public class FileResourceLoader extends ResourceLoader {
      *
      * @since 1.6
      */
+    @Override
     public boolean resourceExists(String name) {
         if (name == null) {
             return false;
@@ -264,6 +270,7 @@ public class FileResourceLoader extends ResourceLoader {
      *
      * @return True if the source has been modified.
      */
+    @Override
     public boolean isSourceModified(Resource resource) {
         /*
          * we assume that the file needs to be reloaded;
@@ -312,6 +319,7 @@ public class FileResourceLoader extends ResourceLoader {
     /**
      * @see org.apache.velocity.runtime.resource.loader.ResourceLoader#getLastModified(org.apache.velocity.runtime.resource.Resource)
      */
+    @Override
     public long getLastModified(Resource resource) {
         String path = (String) templatePaths.get(resource.getName());
         File file = getFile(path, resource.getName());

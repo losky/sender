@@ -13,6 +13,11 @@ import java.io.IOException;
 import java.rmi.ServerException;
 import java.util.Properties;
 
+/**
+ * The type Sms sender.
+ *
+ * @author Administrator
+ */
 public class SmsSender implements Sender<MimeMessage> {
 
     private static final Logger LOG = LoggerFactory
