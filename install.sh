@@ -396,6 +396,8 @@ ping_pmail_service "http://$PMAIL_IP/"
 fetch_and_process_json "配置PMail数据库..." $PMAIL_IP '{"action":"set","step":"database","db_type":"sqlite","db_dsn":"/work/./config/pmail.db"}' 0
 fetch_and_process_json "配置PMail账号密码..." $PMAIL_IP '{"action":"set","step":"password","account":"admin","password":"123456"}' 0
 echo -e "\n\033[36mPMail账号:admin, 密码:123456 \033[0m" 
-fetch_and_process_json "配置PMail域名..." $PMAIL_IP '{"action":"set","step":"domain","web_domain":"mail.$DOMAIN","smtp_domain":"$DOMAIN","multi_domain":""}' 0
+JSON_DATA=$(jq -n --arg web "mail.$DOMAIN" --arg smtp "$DOMAIN" '{action: "set", step: "domain", web_domain: $web, smtp_domain: $smtp, multi_domain: ""}')
+fetch_and_process_json "配置PMail域名..." $PMAIL_IP "$JSON_DATA" 0
+#fetch_and_process_json "配置PMail域名..." $PMAIL_IP '{"action":"set","step":"domain","web_domain":"mail.$DOMAIN","smtp_domain":"$DOMAIN","multi_domain":""}' 0
 fetch_and_process_json "生成DNS记录..." $PMAIL_IP '{"action":"get","step":"dns"}' 1
 fetch_and_process_json "SSL配置..." $PMAIL_IP '{"action":"set","step":"ssl","ssl_type":"0","key_path":"./config/ssl/private.key","crt_path":"./config/ssl/public.crt"}' 0
