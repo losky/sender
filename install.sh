@@ -381,12 +381,29 @@ fetch_and_process_json() {
                 "--RR \"\(.value.host | @sh)\""
           ) | join("\n")
         ' | xargs -I{} sh -c '
-        echo "执行命令: {}";
-        if {}; then
-            echo -e "\033[32m 阿里云DNS记录添加成功\033[0m"
-        else
-            echo -e "\033[31m 阿里云操作失败，错误日志：$?\033[0m"
-            exit 1;
+        set -eo pipefail  # 开启严格错误检测[5](@ref)
+        max_retries=3
+        retry_delay=2
+        attempt=1
+        cmd_exit_code=0
+        
+        until [ $attempt -gt $max_retries ]; do
+            echo "执行命令: {} (第$attempt次尝试)"
+            if eval {}; then
+                echo -e "\033[32m阿里云DNS记录添加成功\033[0m"
+                cmd_exit_code=0
+                break
+            else
+                cmd_exit_code=$?
+                echo -e "\033[33m操作失败，错误码: $cmd_exit_code\033[0m"
+                sleep $(( retry_delay * 2 ​** (attempt-1) ))  # 指数退避[3](@ref)
+                ((attempt++))
+            fi
+        done
+        
+        if [ $cmd_exit_code -ne 0 ]; then
+            echo -e "\033[31m已达最大重试次数$max_retries，最终失败！\033[0m"
+            exit $cmd_exit_code
         fi'
     else
         # 原有保存逻辑
