@@ -268,7 +268,7 @@ EOF
 echo " PMail配置完成"
 
 echo -e "\n\033[33m停止并删除PMail服务...\033[0m"
-docker system prune -af
+# docker system prune -af
 docker compose down
 
 docker ps -aq | xargs -r docker rm -f
