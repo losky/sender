@@ -7,9 +7,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # 参数校验（新增第4个parse参数）
-if [[ $# -lt 4 ]]; then
+if [[ $# -lt 5 ]]; then
     echo -e "\033[31m错误：缺少必要参数\033[0m"
-    echo "用法: install.sh <IP地址> <说明> <ACCECSS_KEY> <ACCECSS_SECRET>"
+    echo "用法: install.sh <IP地址> <域名> <密码> <ACCECSS_KEY> <ACCECSS_SECRET>"
     exit 1
 fi
 
@@ -19,8 +19,9 @@ CLOUD_REGION="ap-northeast-1"
 
 PMAIL_IP=$1
 DOMAIN=$2
-ACCECSS_KEY=$3
-ACCECSS_SECRET=$4
+PASSWORD=$3
+ACCECSS_KEY=$4
+ACCECSS_SECRET=$5
 
 # 检测Docker是否已安装
 check_docker_installed() {
@@ -269,8 +270,8 @@ echo " PMail配置完成"
 echo -e "\n\033[33m停止并删除PMail服务...\033[0m"
 docker compose down
 
-docker rm -f $(docker ps -aq --filter "name=pmail")
-docker rm -v $(docker ps -aq --filter "name=pmail")
+docker ps -aq --filter "name=pmail" | xargs -r docker rm -f
+docker system prune -af
 
 echo -e "\n\033[36m安装并启动PMail服务...\033[0m"
 # 启动服务（增加错误检测）
@@ -402,8 +403,9 @@ ping_pmail_service "http://$PMAIL_IP/"
 
 
 fetch_and_process_json "配置PMail数据库..." $PMAIL_IP '{"action":"set","step":"database","db_type":"sqlite","db_dsn":"/work/./config/pmail.db"}' 0
-fetch_and_process_json "配置PMail账号密码..." $PMAIL_IP '{"action":"set","step":"password","account":"admin","password":"123456"}' 0
-echo -e "\n\033[36mPMail账号:admin, 密码:123456 \033[0m" 
+ACCOUNT_DATA=$(jq -n --arg pwd "$PASSWORD" '{action: "set", step: $pwd, account: "admin", "password": $pwd}')
+fetch_and_process_json "配置PMail账号密码..." $PMAIL_IP "$ACCOUNT_DATA" 0
+echo -e "\n\033[36mPMail账号: admin, 密码: $PASSWORD \033[0m" 
 JSON_DATA=$(jq -n --arg web "mail.$DOMAIN" --arg smtp "$DOMAIN" '{action: "set", step: "domain", web_domain: $web, smtp_domain: $smtp, multi_domain: ""}')
 fetch_and_process_json "配置PMail域名..." $PMAIL_IP "$JSON_DATA" 0
 #fetch_and_process_json "配置PMail域名..." $PMAIL_IP '{"action":"set","step":"domain","web_domain":"mail.$DOMAIN","smtp_domain":"$DOMAIN","multi_domain":""}' 0
