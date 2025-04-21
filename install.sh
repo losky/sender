@@ -361,12 +361,12 @@ fetch_and_process_json() {
         echo "$http_response" | jq -r '
           .data | keys[] as $domain |
           .[$domain] | to_entries | map(
-             "aliyun alidns OperateBatchDomain --profile AkProfile1 --region cn-zhangjiakou --Type RR_ADD " +
-                "--DomainRecordInfo.1.Type \(.value.type) " +
-                "--DomainRecordInfo.1.Value \"\(.value.value | @sh)\" " +
-                "--DomainRecordInfo.1.Ttl 600 " +
-                "--DomainRecordInfo.1.Domain \"\($domain | @sh)\" " +
-                "--DomainRecordInfo.1.Rr \"\(.value.host | @sh)\""
+             "aliyun alidns AddDomainRecord --profile AkProfile1 --region cn-zhangjiakou " +
+                "--Type \(.value.type) " +
+                "--Value \"\(.value.value | @sh)\" " +
+                "--TTL 600 " +
+                "--DomainName \"\($domain | @sh)\" " +
+                "--RR \"\(.value.host | @sh)\""
           ) | join("\n")
         ' | xargs -I{} sh -c '
         echo "执行命令: {}";
