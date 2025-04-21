@@ -13,6 +13,8 @@ if [[ $# -lt 5 ]]; then
     exit 1
 fi
 
+set -euo pipefail
+
 # 添加Docker官方源前增加文件检测
 DOCKER_KEYRING="/usr/share/keyrings/docker-archive-keyring.gpg"
 CLOUD_REGION="ap-northeast-1"
