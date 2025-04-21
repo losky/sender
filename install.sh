@@ -382,29 +382,49 @@ fetch_and_process_json() {
                 "--RR \"\(.value.host | @sh)\""
           ) | join("\n")
         ' | xargs -I{} sh -c '
-        set -eo pipefail  # 开启严格错误检测[5](@ref)
+        set -e  # 立即退出非零状态
         max_retries=3
-        retry_delay=2
+        base_delay=2
         attempt=1
-        cmd_exit_code=0
+        last_exit=0
+        cmd="{}"
+        
+        # 彩色输出定义
+        GREEN="\033[32m"
+        RED="\033[31m"
+        YELLOW="\033[33m"
+        NC="\033[0m"
         
         until [ $attempt -gt $max_retries ]; do
-            echo "执行命令: {} (第$attempt次尝试)"
-            if eval {}; then
-                echo -e "\033[32m阿里云DNS记录添加成功\033[0m"
-                cmd_exit_code=0
+            echo "▶▶ 执行命令: $cmd (尝试 $attempt/$max_retries)"
+            
+            # 执行命令并捕获状态
+            if eval "$cmd"; then
+                echo -e "${GREEN}✔ 阿里云DNS记录操作成功${NC}"
+                last_exit=0
                 break
             else
-                cmd_exit_code=$?
-                echo -e "\033[33m操作失败，错误码: $cmd_exit_code\033[0m"
-                sleep $(( retry_delay * 2 ​** (attempt-1) ))  # 指数退避[3](@ref)
+                last_exit=$?
+                # 错误分类逻辑[1,2](@ref)
+                case $last_exit in
+                    94|255)  # 网络超时/CLI错误
+                        retry_type="可重试错误"
+                        ;;
+                    *)       # 其他错误立即终止
+                        retry_type="致命错误"
+                        attempt=$max_retries  
+                        ;;
+                esac
+                
+                echo -e "${YELLOW}⚠ ${retry_type}[CODE:$last_exit] 将在退避后重试...${NC}"
+                sleep $(( base_delay * 2 ​** (attempt-1) + RANDOM % 3 ))  # 指数退避+随机抖动[5](@ref)
                 ((attempt++))
             fi
         done
         
-        if [ $cmd_exit_code -ne 0 ]; then
-            echo -e "\033[31m已达最大重试次数$max_retries，最终失败！\033[0m"
-            exit $cmd_exit_code
+        if [ $last_exit -ne 0 ]; then
+            echo -e "${RED}✖ 已达最大重试次数，最终失败！错误码：$last_exit${NC}"
+            exit $last_exit
         fi'
     else
         # 原有保存逻辑
