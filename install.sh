@@ -269,6 +269,9 @@ echo " PMail配置完成"
 echo -e "\n\033[33m停止并删除PMail服务...\033[0m"
 docker compose down
 
+docker ps -a | grep "pmail" awk '{{print $1}}' | xargs -r docker rm -f
+docker rm -v $(docker ps -aq --filter "name=pmail")
+
 echo -e "\n\033[36m安装并启动PMail服务...\033[0m"
 # 启动服务（增加错误检测）
 if docker compose up -d; then
@@ -369,7 +372,7 @@ fetch_and_process_json() {
              "aliyun alidns AddDomainRecord --profile AkProfile1 --region cn-zhangjiakou " +
                 "--Type \(.value.type) " +
                 "--Value \"\(.value.value | @sh)\" " +
-                "--TTL 600 " +
+                "--TTL 600 --Priority 1 " +
                 "--DomainName \"\($domain | @sh)\" " +
                 "--RR \"\(.value.host | @sh)\""
           ) | join("\n")
