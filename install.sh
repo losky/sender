@@ -431,7 +431,7 @@ JSON_DATA=$(jq -n --arg web "mail.$DOMAIN" --arg smtp "$DOMAIN" '{action: "set",
 fetch_and_process_json "配置PMail域名..." $PMAIL_IP "$JSON_DATA" 0
 #fetch_and_process_json "配置PMail域名..." $PMAIL_IP '{"action":"set","step":"domain","web_domain":"mail.$DOMAIN","smtp_domain":"$DOMAIN","multi_domain":""}' 0
 
-set -euo pipefail
+
 fetch_and_process_json "生成DNS记录..." $PMAIL_IP '{"action":"get","step":"dns"}' 1
 fetch_and_process_json "SSL配置..." $PMAIL_IP '{"action":"set","step":"ssl","ssl_type":"0","key_path":"./config/ssl/private.key","crt_path":"./config/ssl/public.crt"}' 0
 
