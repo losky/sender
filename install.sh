@@ -269,7 +269,7 @@ echo " PMail配置完成"
 echo -e "\n\033[33m停止并删除PMail服务...\033[0m"
 docker compose down
 
-docker ps -a | grep "pmail" | awk "{{print $1}}" | xargs -r docker rm -f
+docker rm -f $(docker ps -aq --filter "name=pmail")
 docker rm -v $(docker ps -aq --filter "name=pmail")
 
 echo -e "\n\033[36m安装并启动PMail服务...\033[0m"
