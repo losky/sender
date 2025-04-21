@@ -361,6 +361,11 @@ fetch_and_process_json() {
         echo "$http_response" | jq -r '
           .data | keys[] as $domain |
           .[$domain] | to_entries | map(
+             "aliyun alidns DeleteSubDomainRecords --profile AkProfile1 --region cn-zhangjiakou " +
+             "--Type \(.value.type) " +
+             "--DomainName \"\($domain | @sh)\" " +
+              "--RR \"\(.value.host | @sh)\" " +
+             " && " +
              "aliyun alidns AddDomainRecord --profile AkProfile1 --region cn-zhangjiakou " +
                 "--Type \(.value.type) " +
                 "--Value \"\(.value.value | @sh)\" " +
