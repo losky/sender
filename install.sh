@@ -272,6 +272,9 @@ docker system prune -af
 docker compose down
 
 docker ps -aq | xargs -r docker rm -f
+docker ps -a
+docker network list
+netstat -anpto | grep 25
 
 echo -e "\n\033[36m安装并启动PMail服务...\033[0m"
 # 启动服务（增加错误检测）
