@@ -403,7 +403,7 @@ ping_pmail_service "http://$PMAIL_IP/"
 
 
 fetch_and_process_json "配置PMail数据库..." $PMAIL_IP '{"action":"set","step":"database","db_type":"sqlite","db_dsn":"/work/./config/pmail.db"}' 0
-ACCOUNT_DATA=$(jq -n --arg pwd "$PASSWORD" '{action: "set", step: $pwd, account: "admin", "password": $pwd}')
+ACCOUNT_DATA=$(jq -n --arg pwd "$PASSWORD" '{action: "set", step: "password", account: "admin", "password": $pwd}')
 fetch_and_process_json "配置PMail账号密码..." $PMAIL_IP "$ACCOUNT_DATA" 0
 echo -e "\n\033[36mPMail账号: admin, 密码: $PASSWORD \033[0m" 
 JSON_DATA=$(jq -n --arg web "mail.$DOMAIN" --arg smtp "$DOMAIN" '{action: "set", step: "domain", web_domain: $web, smtp_domain: $smtp, multi_domain: ""}')
