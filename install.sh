@@ -439,7 +439,7 @@ fetch_and_process_json() {
  
 echo -e "\n\033[36m检测PMail服务是否正常...\033[0m"
 
-ping_pmail_service "http://$PMAIL_IP/"
+ping_pmail_service "http://$PMAIL_IP:880/"
 
 
 
