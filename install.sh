@@ -307,7 +307,7 @@ ping_pmail_service(){
         elapsed=$((current_time - start_time))
         
         if [ $elapsed -ge $TIMEOUT ]; then
-            echo -e "\033[31m[$(date)] PMail超时（${TIMEOUT}秒）未访问成功\033[0m"
+            echo -e "\033[31m[$(date)] PMail超时（${TIMEOUT}秒）未访问成功，退出程序，请重新处理\033[0m"
             exit 1
         fi
         
