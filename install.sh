@@ -417,7 +417,7 @@ fetch_and_process_json() {
                 esac
                 
                 echo -e "${YELLOW}⚠ ${retry_type}[CODE:$last_exit] 将在退避后重试...${NC}"
-                sleep $(( base_delay * 2 ​** (attempt-1) + RANDOM % 3 ))  # 指数退避+随机抖动[5](@ref)
+                sleep $((base_delay*2​**(attempt-1)+RANDOM%3))  # 指数退避+随机抖动[5](@ref)
                 ((attempt++))
             fi
         done
